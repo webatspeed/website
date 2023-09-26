@@ -45,3 +45,27 @@ resource "aws_subnet" "webatspeed_private_subnet" {
     Name = "webatspeed_private_${count.index + 1}"
   }
 }
+
+
+resource "aws_default_route_table" "webatspeed_private_rt" {
+  default_route_table_id = aws_vpc.webatspeed-vpc.default_route_table_id
+
+  tags = {
+    Name = "webatspeed_private"
+  }
+}
+
+resource "aws_route_table" "webatspeed_public_rt" {
+  vpc_id = aws_vpc.webatspeed-vpc.id
+
+  tags = {
+    Name = "webatspeed_public"
+  }
+}
+
+resource "aws_route_table_association" "webatspeed_public_assoc" {
+  count          = var.public_subnet_count
+  subnet_id      = aws_subnet.webatspeed_public_subnet.*.id[count.index]
+  route_table_id = aws_route_table.webatspeed_public_rt.id
+}
+
