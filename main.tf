@@ -5,9 +5,11 @@ module "networking" {
   max_subnets          = 20
   public_subnet_count  = 2
   public_cidrs         = [for i in range(2, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
-  private_subnet_count = 1
+  private_subnet_count = 2
   private_cidrs        = [for i in range(1, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
   security_groups      = local.security_groups
+
+  create_db_subnet_group = true
 }
 
 module "loadbalancing" {
@@ -27,6 +29,20 @@ module "loadbalancing" {
   listener_protocol = "HTTP"
 }
 
+module "database" {
+  source                 = "./database"
+  db_storage             = 10
+  db_engine_version      = "5.7"
+  db_instance_class      = "db.t2.micro"
+  db_identifier          = "webatspeed-db"
+  db_name                = var.db_name
+  db_user                = var.db_user
+  db_password            = var.db_password
+  skip_db_snapshot       = true
+  db_subnet_group_name   = module.networking.db_subnet_group_name[0]
+  vpc_security_group_ids = module.networking.db_security_group
+}
+
 module "compute" {
   source = "./compute"
 
@@ -41,4 +57,11 @@ module "compute" {
   key_name            = "webatspeed-key"
   public_key_path     = var.public_key_path
   tg_port             = 8000
+
+  db_user_data_path = "${path.root}/compute/userdata.tpl"
+  db_endpoint       = module.database.db_endpoint
+  db_name           = var.db_name
+  db_password       = var.db_password
+  db_user           = var.db_user
+  token             = var.token
 }

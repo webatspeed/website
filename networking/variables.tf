@@ -23,3 +23,7 @@ variable "private_subnet_count" {
 }
 
 variable "security_groups" {}
+
+variable "create_db_subnet_group" {
+  type = bool
+}

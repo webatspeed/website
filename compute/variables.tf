@@ -7,3 +7,9 @@ variable "public_subnets" {}
 variable "vol_size" {}
 variable "lb_target_group_arn" {}
 variable "tg_port" {}
+variable "db_endpoint" {}
+variable "db_user" {}
+variable "db_password" {}
+variable "db_name" {}
+variable "db_user_data_path" {}
+variable "token" {}

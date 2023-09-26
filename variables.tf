@@ -9,3 +9,22 @@ variable "access_ip" {
 variable "public_key_path" {
   type = string
 }
+
+variable "db_name" {
+  type = string
+}
+
+variable "db_user" {
+  type      = string
+  sensitive = true
+}
+
+variable "db_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "token" {
+  type      = string
+  sensitive = true
+}

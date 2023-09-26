@@ -31,6 +31,14 @@ resource "aws_instance" "webatspeed_node" {
   key_name               = aws_key_pair.webatspeed_auth.id
   vpc_security_group_ids = [var.public_sg]
   subnet_id              = var.public_subnets[count.index]
+  user_data = templatefile(var.db_user_data_path, {
+    node_name   = "webatspeed-${random_id.webatspeed_node_id[count.index].dec}"
+    db_endpoint = var.db_endpoint
+    db_user     = var.db_user
+    db_pass     = var.db_password
+    db_name     = var.db_name
+    token       = var.token
+  })
   root_block_device {
     volume_size = var.vol_size
   }

@@ -1,2 +1,7 @@
 access_ip = ""
 public_key_path = ""
+
+db_name = ""
+db_user = ""
+db_password = ""
+token = ""
