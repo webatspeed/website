@@ -3,7 +3,7 @@ terraform {
     organization = "webatspeed"
 
     workspaces {
-      name = "webatspeed"
+      name = "webatspeed-prod"
     }
   }
 }
