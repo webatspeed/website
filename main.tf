@@ -1,0 +1,3 @@
+module "compute" {
+  source = "./compute"
+}
