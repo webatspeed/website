@@ -11,7 +11,6 @@ variable "db_endpoint" {}
 variable "db_user" {}
 variable "db_password" {}
 variable "db_name" {}
-variable "db_user_data_path" {}
 variable "token" {}
 variable "private_key_path" {}
 variable "orch_config_path" {}

@@ -60,10 +60,9 @@ module "compute" {
   orch_config_path    = "${path.cwd}/orchestration/"
   tg_port             = 8000
 
-  db_user_data_path = "${path.root}/compute/userdata.tpl"
-  db_endpoint       = module.database.db_endpoint
-  db_name           = var.db_name
-  db_password       = var.db_password
-  db_user           = var.db_user
-  token             = var.token
+  db_endpoint = module.database.db_endpoint
+  db_name     = var.db_name
+  db_password = var.db_password
+  db_user     = var.db_user
+  token       = var.token
 }

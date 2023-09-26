@@ -31,7 +31,7 @@ resource "aws_instance" "webatspeed_node" {
   key_name               = aws_key_pair.webatspeed_auth.id
   vpc_security_group_ids = [var.public_sg]
   subnet_id              = var.public_subnets[count.index]
-  user_data = templatefile(var.db_user_data_path, {
+  user_data = templatefile("${path.module}/install-k3s.tpl", {
     node_name   = "webatspeed-${random_id.webatspeed_node_id[count.index].dec}"
     db_endpoint = var.db_endpoint
     db_user     = var.db_user
