@@ -5,3 +5,7 @@ variable "aws_region" {
 variable "access_ip" {
   type = string
 }
+
+variable "public_key_path" {
+  type = string
+}

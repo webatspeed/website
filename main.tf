@@ -1,7 +1,3 @@
-module "compute" {
-  source = "./compute"
-}
-
 module "networking" {
   source   = "./networking"
   vpc_cidr = local.vpc_cidr
@@ -29,4 +25,20 @@ module "loadbalancing" {
 
   listener_port     = 80
   listener_protocol = "HTTP"
+}
+
+module "compute" {
+  source = "./compute"
+
+  instance_count = 1
+  instance_type  = "t3.small"
+  vol_size       = 10
+
+  public_sg      = module.networking.public_sg
+  public_subnets = module.networking.public_subnets
+
+  lb_target_group_arn = module.loadbalancing.lb_target_group_arn
+  key_name            = "webatspeed-key"
+  public_key_path     = var.public_key_path
+  tg_port             = 8000
 }
