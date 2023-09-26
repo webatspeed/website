@@ -56,6 +56,8 @@ module "compute" {
   lb_target_group_arn = module.loadbalancing.lb_target_group_arn
   key_name            = "webatspeed-key"
   public_key_path     = var.public_key_path
+  private_key_path    = var.private_key_path
+  orch_config_path    = "${path.cwd}/orchestration/"
   tg_port             = 8000
 
   db_user_data_path = "${path.root}/compute/userdata.tpl"

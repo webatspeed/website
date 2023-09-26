@@ -1,5 +1,6 @@
 access_ip = ""
 public_key_path = ""
+private_key_path = ""
 
 db_name = ""
 db_user = ""

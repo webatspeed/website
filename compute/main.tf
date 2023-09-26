@@ -42,6 +42,25 @@ resource "aws_instance" "webatspeed_node" {
   root_block_device {
     volume_size = var.vol_size
   }
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      host        = self.public_ip
+      private_key = file(var.private_key_path)
+    }
+    script = "${path.module}/wait-for-k3s.sh"
+  }
+  provisioner "local-exec" {
+    command = templatefile("${path.module}/scp-kubeconfig.tpl",
+      {
+        node_ip          = self.public_ip
+        k3s_path         = var.orch_config_path
+        node_name        = self.tags.Name
+        private_key_path = var.private_key_path
+      }
+    )
+  }
 }
 
 resource "aws_lb_target_group_attachment" "webatspeed_tg_attach" {
