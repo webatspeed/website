@@ -21,3 +21,5 @@ variable "public_subnet_count" {
 variable "private_subnet_count" {
   type = number
 }
+
+variable "security_groups" {}
