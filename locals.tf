@@ -20,7 +20,7 @@ locals {
           protocol    = "tcp"
           cidr_blocks = ["0.0.0.0/0"]
         }
-        nginx = {
+        frontend = {
           from        = 8000
           to          = 8000
           protocol    = "tcp"
