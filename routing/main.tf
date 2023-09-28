@@ -3,11 +3,11 @@ resource "aws_route53_zone" "webatspeed_zone_de" {
 }
 
 resource "aws_acm_certificate" "webatspeed_acm_cert" {
-  domain_name               = "webatspeed.de"
-  subject_alternative_names = ["*.webatspeed.de"]
+  domain_name               = aws_route53_zone.webatspeed_zone_de.name
+  subject_alternative_names = ["*.${aws_route53_zone.webatspeed_zone_de.name}"]
   validation_method         = "DNS"
   tags = {
-    Name : "webatspeed.de"
+    Name : aws_route53_zone.webatspeed_zone_de.name
   }
   lifecycle {
     create_before_destroy = true
@@ -40,21 +40,11 @@ resource "aws_acm_certificate_validation" "webatspeed_acm_cert_validation" {
   validation_record_fqdns = [for record in aws_route53_record.webatspeed_route53_record : record.fqdn]
 }
 
-resource "aws_route53_record" "webatspeed_de_www" {
-  name    = "www.webatspeed.de"
-  type    = "A"
-  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
-  alias {
-    evaluate_target_health = true
-    name                   = var.dns_name
-    zone_id                = var.zone_id
-  }
-}
-
-resource "aws_route53_record" "webatspeed_de_apex" {
-  name    = "webatspeed.de"
-  type    = "A"
-  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
+resource "aws_route53_record" "webatspeed_de" {
+  for_each = toset(["", "www."])
+  name     = "${each.key}${aws_route53_zone.webatspeed_zone_de.name}"
+  type     = "A"
+  zone_id  = aws_route53_zone.webatspeed_zone_de.zone_id
   alias {
     evaluate_target_health = true
     name                   = var.dns_name
