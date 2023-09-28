@@ -57,7 +57,7 @@ module "compute" {
   key_name            = "webatspeed-key"
   public_key_path     = var.public_key_path
   private_key_path    = var.private_key_path
-  orch_config_path    = "${path.cwd}/orchestration/"
+  orch_config_path    = "${path.cwd}/orchestration/config/"
   tg_port             = 8000
 
   db_endpoint = module.database.db_endpoint

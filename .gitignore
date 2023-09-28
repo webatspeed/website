@@ -20,4 +20,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-orchestration/k3s-*.yaml*
+orchestration/config/k3s-*.yaml*
