@@ -98,7 +98,7 @@ resource "aws_security_group" "webatspeed_sg" {
 }
 
 
-resource "aws_internet_gateway" "was_internet_gateway" {
+resource "aws_internet_gateway" "webatspeed_internet_gateway" {
   vpc_id = aws_vpc.webatspeed-vpc.id
 
   tags = {
@@ -109,7 +109,7 @@ resource "aws_internet_gateway" "was_internet_gateway" {
 resource "aws_route" "default_route" {
   route_table_id         = aws_route_table.webatspeed_public_rt.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.was_internet_gateway.id
+  gateway_id             = aws_internet_gateway.webatspeed_internet_gateway.id
 }
 
 
