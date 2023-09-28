@@ -24,3 +24,4 @@ variable "listener_protocol_plain" {}
 variable "listener_port_encrypted" {}
 variable "listener_protocol_encrypted" {}
 variable "listener_ssl_policy" {}
+variable "certificate_arn" {}

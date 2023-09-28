@@ -30,6 +30,13 @@ module "loadbalancing" {
   listener_port_encrypted     = 443
   listener_protocol_encrypted = "HTTPS"
   listener_ssl_policy         = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn             = module.routing.certificate_arn
+}
+
+module "routing" {
+  source   = "./routing"
+  dns_name = module.loadbalancing.lb_endpoint
+  zone_id  = module.loadbalancing.lb_zone_id
 }
 
 module "database" {
