@@ -25,12 +25,8 @@ module "loadbalancing" {
   tg_protocol            = "HTTP"
   vpc_id                 = module.networking.vpc_id
 
-  listener_port_plain         = 80
-  listener_protocol_plain     = "HTTP"
-  listener_port_encrypted     = 443
-  listener_protocol_encrypted = "HTTPS"
-  listener_ssl_policy         = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn             = module.routing.certificate_arn
+  listener_ssl_policy = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn     = module.routing.certificate_arn
 }
 
 module "routing" {

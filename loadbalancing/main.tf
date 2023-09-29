@@ -24,8 +24,8 @@ resource "aws_lb_target_group" "webatspeed_tg" {
 
 resource "aws_lb_listener" "webatspeed_lb_listener_plain" {
   load_balancer_arn = aws_lb.webatspeed_lb.arn
-  port              = var.listener_port_plain
-  protocol          = var.listener_protocol_plain
+  port              = 80
+  protocol          = "HTTP"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.webatspeed_tg.arn
@@ -34,8 +34,8 @@ resource "aws_lb_listener" "webatspeed_lb_listener_plain" {
 
 resource "aws_lb_listener" "webatspeed_lb_listener_encrypted" {
   load_balancer_arn = aws_lb.webatspeed_lb.arn
-  port              = var.listener_port_encrypted
-  protocol          = var.listener_protocol_encrypted
+  port              = 443
+  protocol          = "HTTPS"
   ssl_policy        = var.listener_ssl_policy
   certificate_arn   = var.certificate_arn
   default_action {
