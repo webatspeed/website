@@ -30,7 +30,7 @@ locals {
           from        = 8000
           to          = 8000
           protocol    = "tcp"
-          cidr_blocks = ["0.0.0.0/0"]
+          cidr_blocks = [local.vpc_cidr]
         }
       }
     }
