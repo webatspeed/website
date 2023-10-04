@@ -32,8 +32,9 @@ module "loadbalancing" {
 module "routing" {
   source = "./routing"
 
-  dns_name = module.loadbalancing.lb_endpoint
-  zone_id  = module.loadbalancing.lb_zone_id
+  dns_name   = module.loadbalancing.lb_endpoint
+  zone_id    = module.loadbalancing.lb_zone_id
+  aws_region = var.aws_region
 }
 
 module "database" {

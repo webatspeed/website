@@ -51,3 +51,57 @@ resource "aws_route53_record" "webatspeed_de" {
     zone_id                = var.zone_id
   }
 }
+
+resource "aws_ses_domain_identity" "webatspeed_ses_domain" {
+  domain = aws_route53_zone.webatspeed_zone_de.name
+}
+
+resource "aws_ses_domain_mail_from" "webatspeed_ses_domain_mail_from" {
+  domain           = aws_ses_domain_identity.webatspeed_ses_domain.domain
+  mail_from_domain = "mail.${aws_ses_domain_identity.webatspeed_ses_domain.domain}"
+}
+
+resource "aws_route53_record" "webatspeed_verification_record" {
+  name    = "_amazonses.${aws_ses_domain_identity.webatspeed_ses_domain.domain}"
+  type    = "TXT"
+  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
+  ttl     = 600
+  records = [join("", aws_ses_domain_identity.webatspeed_ses_domain.*.verification_token)]
+}
+
+resource "aws_ses_domain_dkim" "webatspeed_ses_domain_dkim" {
+  domain = join("", aws_ses_domain_identity.webatspeed_ses_domain.*.domain)
+}
+
+resource "aws_route53_record" "webatspeed_dkim_record" {
+  count   = 3
+  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
+  name    = "${element(aws_ses_domain_dkim.webatspeed_ses_domain_dkim.dkim_tokens, count.index)}._domainkey.${aws_ses_domain_identity.webatspeed_ses_domain.domain}"
+  type    = "CNAME"
+  ttl     = 600
+  records = ["${element(aws_ses_domain_dkim.webatspeed_ses_domain_dkim.dkim_tokens, count.index)}.dkim.amazonses.com"]
+}
+
+resource "aws_route53_record" "webatspeed_spf_mail_from" {
+  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
+  name    = aws_ses_domain_mail_from.webatspeed_ses_domain_mail_from.mail_from_domain
+  type    = "TXT"
+  ttl     = 600
+  records = ["v=spf1 include:amazonses.com ~all"]
+}
+
+resource "aws_route53_record" "webatspeed_spf_domain" {
+  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
+  name    = aws_ses_domain_identity.webatspeed_ses_domain.domain
+  type    = "TXT"
+  ttl     = 600
+  records = ["v=spf1 include:amazonses.com ~all"]
+}
+
+resource "aws_route53_record" "webatspeed_mx_mail_from" {
+  zone_id = aws_route53_zone.webatspeed_zone_de.id
+  name    = aws_ses_domain_mail_from.webatspeed_ses_domain_mail_from.mail_from_domain
+  type    = "MX"
+  ttl     = 600
+  records = ["10 feedback-smtp.${var.aws_region}.amazonses.com"]
+}
