@@ -37,6 +37,12 @@ module "routing" {
   aws_region = var.aws_region
 }
 
+module "mailing" {
+  source = "./mailing"
+
+  email = var.email
+}
+
 module "database" {
   source = "./database"
 

@@ -1,4 +1,5 @@
 access_ip = ""
+email = ""
 public_key_path = ""
 private_key_path = ""
 

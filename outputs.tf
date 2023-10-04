@@ -14,3 +14,8 @@ output "addresses" {
     ["http://${module.loadbalancing.lb_endpoint}"]
   )
 }
+
+output "smtp_user" {
+  value     = "${module.mailing.smtp_username} : ${module.mailing.smtp_password}"
+  sensitive = true
+}
