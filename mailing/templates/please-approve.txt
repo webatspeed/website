@@ -1,0 +1,16 @@
+Check out this subscriber: {{username}}
+
+Cool https://www.webatspeed.com?username={{username}}&uToken={{token}}#headhunters
+
+
+Cheers,
+The Web at Speed Team
+
+--
+
+Web at Speed GmbH
+
+Sitz der Gesellschaft: Rosenfelder Ring 13, 10315 Berlin
+Registergericht: Amtsgericht Berlin (Charlottenburg)
+Handelsregisternummer: HRB 149333
+Geschäftsführung: Dipl.-Inf. Torsten Krohn

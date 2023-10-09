@@ -55,5 +55,25 @@ locals {
       name    = "please-confirm"
       subject = "Welcome to Web at Speed - Please confirm your email address"
     }
+    please_wait = {
+      name    = "please-wait"
+      subject = "You confirmed your email address - CV coming up"
+    }
+    please_approve = {
+      name    = "please-approve"
+      subject = "CV requested"
+    }
+    first_cv = {
+      name    = "first-cv"
+      subject = "A Web at Speed CV"
+    }
+    updated_cv = {
+      name    = "updated-cv"
+      subject = "CV updated"
+    }
+    goodbye_subscriber = {
+      name    = "goodbye-subscriber"
+      subject = "CV unsubscribed"
+    }
   }
 }
