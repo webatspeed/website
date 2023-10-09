@@ -1,16 +1,3 @@
 Your subscription is complete. Please find the requested CV attached as PDF files.
 
 This message was sent to {{username}} because you have subscribed to our CV newsletter. You'll get about three newsletters a year whenever an update is available. If you don't want to receive these emails from Web at Speed in the future, please unsubscribe: https://www.webatspeed.com?username={{username}}&dToken={{token}}#headhunters
-
-
-Cheers,
-The Web at Speed Team
-
---
-
-Web at Speed GmbH
-
-Sitz der Gesellschaft: Rosenfelder Ring 13, 10315 Berlin
-Registergericht: Amtsgericht Berlin (Charlottenburg)
-Handelsregisternummer: HRB 149333
-Geschäftsführung: Dipl.-Inf. Torsten Krohn

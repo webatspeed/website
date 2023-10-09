@@ -34,6 +34,10 @@ resource "aws_ses_template" "webatspeed_ses_templates" {
 
   name    = each.value.name
   subject = each.value.subject
-  text    = file("${path.module}/templates/${each.value.name}.txt")
-  html    = file("${path.module}/templates/${each.value.name}.html")
+  text = join("\n", [
+    for fn in ["${path.module}/templates/${each.value.name}.txt", "${path.module}/templates/footer.txt"] : file(fn)
+  ])
+  html = join("\n", [
+    for fn in ["${path.module}/templates/${each.value.name}.html", "${path.module}/templates/footer.html"] : file(fn)
+  ])
 }
