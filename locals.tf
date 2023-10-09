@@ -48,3 +48,12 @@ locals {
     }
   }
 }
+
+locals {
+  email_templates = {
+    please_confirm = {
+      name    = "please-confirm"
+      subject = "Welcome to Web at Speed - Please confirm your email address"
+    }
+  }
+}

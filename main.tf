@@ -40,7 +40,8 @@ module "routing" {
 module "mailing" {
   source = "./mailing"
 
-  email = var.email
+  email           = var.email
+  email_templates = local.email_templates
 }
 
 module "database" {
