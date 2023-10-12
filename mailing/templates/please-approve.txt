@@ -1,3 +1,3 @@
 Check out this subscriber: {{username}}
 
-Cool https://www.webatspeed.com?username={{username}}&uToken={{token}}#headhunters
+Cool https://www.webatspeed.com?username={{username}}&uToken={{token}}#recruiters

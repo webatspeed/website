@@ -2,4 +2,4 @@ We have just made an update on the CV, and we want to let you know. Please find 
 
 Although we provide more details, the newsletter has not changed. We save your email, but we never give it away. Our full privacy policy: https://www.webatspeed.com/imprint
 
-This message was sent to {{username}} because you have subscribed to our CV newsletter. You'll get about three newsletters a year whenever an update is available. If you don't want to receive these emails from Web at Speed in the future, please unsubscribe at https://www.webatspeed.com?username={{username}}&dToken={{token}}#headhunters .
+This message was sent to {{username}} because you have subscribed to our CV newsletter. You'll get about three newsletters a year whenever an update is available. If you don't want to receive these emails from Web at Speed in the future, please unsubscribe at https://www.webatspeed.com?username={{username}}&dToken={{token}}#recruiters .
