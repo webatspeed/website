@@ -17,8 +17,14 @@ cp terraform.tfvars.example terraform.tfvars
 vim terraform.tfvars
 terraform init && terraform apply -auto-approve
 
-export KUBECONFIG=./orchestration/config/k3s-webatspeed_node-*.yaml
-kubectl apply -f orchestration/frontend.yaml
+cd orchestration/config
+export KUBECONFIG=./k3s-webatspeed_node-*.yaml
+vim mongodb-root-password
+vim mongodb-root-username
+kubectl create secret generic mongo-credentials \
+ --from-file=./mongodb-root-username --from-file=./mongodb-root-password
+
+kubectl apply -f ..
 
 open https://www.webatspeed.de
 ```
