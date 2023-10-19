@@ -97,3 +97,16 @@ spec:
         - name: mongo-data-dir
           persistentVolumeClaim:
             claimName: mongodb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  labels:
+    app: mongodb
+spec:
+  ports:
+    - port: 27017
+      protocol: TCP
+  selector:
+    app: mongodb
