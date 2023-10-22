@@ -49,12 +49,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mongo-credentials
-                  key: mongodb-root-username
+                  key: username
             - name: MONGODB_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mongo-credentials
-                  key: mongodb-root-password
+                  key: password
             - name: MONGODB_INITDB_DATABASE
               value: subscription
             - name: ALLOW_EMPTY_PASSWORD

@@ -21,5 +21,3 @@ override.tf.json
 terraform.rc
 
 orchestration/config/k3s-*.yaml*
-orchestration/config/mongodb-root-password
-orchestration/config/mongodb-root-username

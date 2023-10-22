@@ -19,10 +19,9 @@ terraform init && terraform apply -auto-approve
 
 cd orchestration/config
 export KUBECONFIG=./k3s-webatspeed_node-*.yaml
-vim mongodb-root-password
-vim mongodb-root-username
 kubectl create secret generic mongo-credentials \
- --from-file=./mongodb-root-username --from-file=./mongodb-root-password
+ --from-literal username=<username> \
+ --from-literal password=<password>
 
 kubectl apply -f ..
 
