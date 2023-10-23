@@ -1,5 +1,5 @@
-resource "aws_ses_email_identity" "example" {
-  email = var.email
+resource "aws_sesv2_email_identity" "example" {
+  email_identity = var.email
 }
 
 resource "aws_iam_user" "webatspeed_smtp_user" {
@@ -12,7 +12,7 @@ resource "aws_iam_access_key" "webatspeed_iam_access_key" {
 
 data "aws_iam_policy_document" "webatspeed_iam_ses_policy_document" {
   statement {
-    actions   = ["ses:SendEmail", "ses:SendRawEmail"]
+    actions   = ["ses:SendEmail", "ses:SendRawEmail", "ses:SendTemplatedEmail"]
     resources = ["*"]
   }
 }

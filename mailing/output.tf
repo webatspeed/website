@@ -3,5 +3,5 @@ output "smtp_username" {
 }
 
 output "smtp_password" {
-  value = aws_iam_access_key.webatspeed_iam_access_key.ses_smtp_password_v4
+  value = aws_iam_access_key.webatspeed_iam_access_key.secret
 }

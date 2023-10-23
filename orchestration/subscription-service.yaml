@@ -30,16 +30,21 @@ spec:
                 secretKeyRef:
                   name: mongo-credentials
                   key: password
-            - name: SES_USER
+            - name: AWS_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: ses-credentials
                   key: username
-            - name: SES_PASS
+            - name: AWS_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: ses-credentials
                   key: password
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: ses-credentials
+                  key: region
             - name: EMAIL
               valueFrom:
                 secretKeyRef:
