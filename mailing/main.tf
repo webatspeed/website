@@ -12,7 +12,10 @@ resource "aws_iam_access_key" "webatspeed_iam_access_key" {
 
 data "aws_iam_policy_document" "webatspeed_iam_ses_policy_document" {
   statement {
-    actions   = ["ses:SendEmail", "ses:SendRawEmail", "ses:SendTemplatedEmail"]
+    actions = [
+      "ses:GetEmailTemplate", "ses:SendEmail", "ses:SendRawEmail",
+      "ses:SendTemplatedEmail", "ses:TestRenderEmailTemplate"
+    ]
     resources = ["*"]
   }
 }
