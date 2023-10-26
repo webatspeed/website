@@ -18,6 +18,13 @@ data "aws_iam_policy_document" "webatspeed_iam_ses_policy_document" {
     ]
     resources = ["*"]
   }
+  statement {
+    actions = ["s3:Get*", "s3:List*"]
+    resources = [
+      aws_s3_bucket.webatspeed_s3_bucket_attachments.arn,
+      "${aws_s3_bucket.webatspeed_s3_bucket_attachments.arn}/*"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "webatspeed_iam_ses_policy" {
