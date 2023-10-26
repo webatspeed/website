@@ -44,3 +44,23 @@ resource "aws_ses_template" "webatspeed_ses_templates" {
     for fn in ["${path.module}/templates/${each.value.name}.html", "${path.module}/templates/footer.html"] : file(fn)
   ])
 }
+
+resource "random_id" "webatspeed_random_id_attachments" {
+  byte_length = 2
+  keepers = {
+    dir_name = var.attachment_dir
+  }
+}
+
+resource "aws_s3_bucket" "webatspeed_s3_bucket_attachments" {
+  bucket = "attachments-${random_id.webatspeed_random_id_attachments.dec}"
+}
+
+resource "aws_s3_object" "webatspeed_s3_object_attachment" {
+  bucket   = aws_s3_bucket.webatspeed_s3_bucket_attachments.id
+  for_each = fileset("${path.module}/attachments/", "**/*?.*")
+
+  key         = each.value
+  source      = "${path.module}/attachments/${each.value}"
+  source_hash = filemd5("${path.module}/attachments/${each.value}")
+}

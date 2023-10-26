@@ -21,3 +21,6 @@ override.tf.json
 terraform.rc
 
 orchestration/config/k3s-*.yaml*
+mailing/attachments/**
+
+!/**/.gitkeep

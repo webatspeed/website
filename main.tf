@@ -42,6 +42,7 @@ module "mailing" {
 
   email           = var.email
   email_templates = local.email_templates
+  attachment_dir  = "attachments"
 }
 
 module "database" {
