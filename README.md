@@ -26,7 +26,8 @@ kubectl create secret generic ses-credentials \
  --from-literal username='<username>' \
  --from-literal password='<password>' \
  --from-literal email='<email>' \
- --from-literal region='<region>'
+ --from-literal region='<region>' \
+ --from-literal bucket='<bucket>'
 
 kubectl apply -f ..
 

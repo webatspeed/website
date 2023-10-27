@@ -45,6 +45,11 @@ spec:
                 secretKeyRef:
                   name: ses-credentials
                   key: region
+            - name: BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: ses-credentials
+                  key: bucket
             - name: EMAIL
               valueFrom:
                 secretKeyRef:
