@@ -65,7 +65,7 @@ module "compute" {
 
   instance_count = 1
   instance_type  = "t3.small"
-  vol_size       = 10
+  vol_size       = 20
 
   public_sg      = module.networking.public_sg
   public_subnets = module.networking.public_subnets
