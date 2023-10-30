@@ -39,6 +39,9 @@ resource "aws_instance" "webatspeed_node" {
     db_name     = var.db_name
     token       = var.token
   })
+  lifecycle {
+    ignore_changes = [ami]
+  }
   root_block_device {
     volume_size = var.vol_size
   }
