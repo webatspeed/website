@@ -32,4 +32,5 @@ kubectl create secret generic ses-credentials \
 kubectl apply -f ..
 
 open https://www.webatspeed.de
+../scripts/distribute.sh
 ```
