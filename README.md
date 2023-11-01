@@ -1,11 +1,15 @@
 # Web at Speed website
 
 - Terraform (Cloud)
-- AWS (VPC, ELB, EC2, ACM, RDS, Route 53, SES)
+- AWS (VPC, ELB, EC2, ACM, RDS, Route 53, SES, S3)
 - Kubernetes (K3s)
 - Docker
     - [webatspeed/webatspeed-fe](https://hub.docker.com/r/webatspeed/webatspeed-fe/tags)
 - bash
+
+## Infrastructure and Orchestration
+
+![Infrastructure and Orchestration](infra.svg "Infrastructure and Orchestration")
 
 ## Installation
 
