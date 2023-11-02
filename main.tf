@@ -48,16 +48,19 @@ module "mailing" {
 module "database" {
   source = "./database"
 
-  db_storage             = 10
-  db_engine_version      = "5.7"
-  db_instance_class      = "db.t2.micro"
-  db_identifier          = "webatspeed-db"
-  db_name                = var.db_name
-  db_user                = var.db_user
-  db_password            = var.db_password
-  skip_db_snapshot       = true
-  db_subnet_group_name   = module.networking.db_subnet_group_name[0]
-  vpc_security_group_ids = module.networking.db_security_group
+  db_storage              = 10
+  db_engine_version       = "5.7"
+  db_instance_class       = "db.t2.micro"
+  db_identifier           = "webatspeed-db"
+  db_name                 = var.db_name
+  db_user                 = var.db_user
+  db_password             = var.db_password
+  skip_db_snapshot        = false
+  db_subnet_group_name    = module.networking.db_subnet_group_name[0]
+  vpc_security_group_ids  = module.networking.db_security_group
+  backup_retention_period = 14
+  backup_window           = "03:00-04:00"
+  maintenance_window      = "Sun:04:01-Sun:05:00"
 }
 
 module "compute" {

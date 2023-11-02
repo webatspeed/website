@@ -9,7 +9,13 @@ resource "aws_db_instance" "webatspeed_db" {
   db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = var.vpc_security_group_ids
   identifier             = var.db_identifier
-  skip_final_snapshot    = var.skip_db_snapshot
+
+  backup_retention_period   = var.backup_retention_period
+  backup_window             = var.backup_window
+  maintenance_window        = var.maintenance_window
+  skip_final_snapshot       = var.skip_db_snapshot
+  final_snapshot_identifier = "${var.db_identifier}-snapshot"
+
   tags = {
     Name = "webatspeed-db"
   }
