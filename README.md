@@ -1,4 +1,4 @@
-# Web at Speed website
+# Web at Speed Website
 
 - Terraform (Cloud)
 - AWS (VPC, ELB, EC2, ACM, RDS, Route 53, SES, S3)
@@ -36,5 +36,16 @@ kubectl create secret generic ses-credentials \
 kubectl apply -f ..
 
 open https://www.webatspeed.de
-../scripts/distribute.sh
+```
+
+## Distribute Newsletter
+
+```
+./orchestration/scripts/distribute.sh
+```
+
+## Backup Subscribers
+
+```
+./orchestration/scripts/mongodump.sh /directory/to/save
 ```
