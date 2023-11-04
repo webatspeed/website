@@ -31,7 +31,7 @@ resource "aws_instance" "webatspeed_node" {
   key_name               = aws_key_pair.webatspeed_auth.id
   vpc_security_group_ids = [var.public_sg]
   subnet_id              = var.public_subnets[count.index]
-  user_data = templatefile("${path.module}/install-k3s.tpl", {
+  user_data = templatefile("${path.module}/scripts/install-k3s.tpl", {
     node_name   = "webatspeed-${random_id.webatspeed_node_id[count.index].dec}"
     db_endpoint = var.db_endpoint
     db_user     = var.db_user
@@ -39,23 +39,23 @@ resource "aws_instance" "webatspeed_node" {
     db_name     = var.db_name
     token       = var.token
   })
-  lifecycle {
-    ignore_changes = [ami]
-  }
   root_block_device {
     volume_size = var.vol_size
   }
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    host        = self.public_ip
+    private_key = file(var.private_key_path)
+  }
   provisioner "remote-exec" {
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host        = self.public_ip
-      private_key = file(var.private_key_path)
-    }
-    script = "${path.module}/wait-for-k3s.sh"
+    script = "${path.module}/scripts/wait-for-k3s.sh"
+  }
+  provisioner "remote-exec" {
+    script = "${path.module}/scripts/growpart.sh"
   }
   provisioner "local-exec" {
-    command = templatefile("${path.module}/scp-kubeconfig.tpl",
+    command = templatefile("${path.module}/scripts/scp-kubeconfig.tpl",
       {
         node_ip          = self.public_ip
         k3s_path         = var.orch_config_path
