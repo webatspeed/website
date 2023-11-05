@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: webatspeed-fe
-          image: webatspeed/webatspeed-fe:0.2.0
+          image: webatspeed/webatspeed-fe:0.3.0
           ports:
             - containerPort: 3000
               hostPort: 8000
