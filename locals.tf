@@ -34,18 +34,6 @@ locals {
         }
       }
     }
-    mongo = {
-      name        = "mongo_sg"
-      description = "mongo access"
-      ingress = {
-        mongo = {
-          from        = 27017
-          to          = 27017
-          protocol    = "tcp"
-          cidr_blocks = [local.vpc_cidr]
-        }
-      }
-    }
     rds = {
       name        = "rds_sg"
       description = "rds access"
