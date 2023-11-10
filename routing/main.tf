@@ -26,7 +26,7 @@ resource "aws_route53_record" "webatspeed_route53_record" {
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
-  ttl             = 60
+  ttl             = 600
   type            = each.value.type
   zone_id         = aws_route53_zone.webatspeed_zone_de.zone_id
 }
