@@ -9,6 +9,7 @@ resource "aws_db_instance" "webatspeed_db" {
   db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = var.vpc_security_group_ids
   identifier             = var.db_identifier
+  ca_cert_identifier     = "rds-ca-rsa2048-g1"
 
   backup_retention_period   = var.backup_retention_period
   backup_window             = var.backup_window
