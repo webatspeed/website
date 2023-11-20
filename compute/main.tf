@@ -42,6 +42,9 @@ resource "aws_instance" "webatspeed_node" {
   root_block_device {
     volume_size = var.vol_size
   }
+  lifecycle {
+    ignore_changes = [ami]
+  }
   connection {
     type        = "ssh"
     user        = "ubuntu"
