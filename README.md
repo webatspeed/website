@@ -5,6 +5,7 @@
 - Kubernetes (K3s)
 - Docker
     - [webatspeed/webatspeed-fe](https://hub.docker.com/r/webatspeed/webatspeed-fe/tags)
+    - [webatspeed/webatspeed-subscription-service](https://hub.docker.com/r/webatspeed/webatspeed-subscription-service/tags)
 - bash
 
 ## Infrastructure and Orchestration
@@ -48,4 +49,10 @@ open https://www.webatspeed.de
 
 ```
 ./orchestration/scripts/mongodump.sh /directory/to/save
+```
+
+## Find Email
+
+```
+./orchestration/scripts/findemail.sh name@domain.com
 ```
