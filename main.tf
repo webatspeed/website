@@ -49,7 +49,7 @@ module "database" {
   source = "./database"
 
   db_storage              = 10
-  db_engine_version       = "5.7"
+  db_engine_version       = "8.0"
   db_instance_class       = "db.t2.micro"
   db_identifier           = "webatspeed-db"
   db_name                 = var.db_name
