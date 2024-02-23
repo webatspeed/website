@@ -86,3 +86,10 @@ module "compute" {
   db_user     = var.db_user
   token       = var.token
 }
+
+module "container" {
+  source = "./container"
+
+  enable_insights = true
+  cluster_name    = "webatspeed-cluster"
+}
