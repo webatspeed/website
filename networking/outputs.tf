@@ -10,14 +10,6 @@ output "vpc_id" {
   value = aws_vpc.webatspeed-vpc.id
 }
 
-output "db_subnet_group_name" {
-  value = aws_db_subnet_group.webatspeed_rds_subnet_group.*.name
-}
-
-output "db_security_group" {
-  value = [aws_security_group.webatspeed_sg["rds"].id]
-}
-
 output "fe_security_group" {
   value = [aws_security_group.webatspeed_sg["frontend"].id]
 }

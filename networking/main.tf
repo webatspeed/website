@@ -143,12 +143,3 @@ resource "aws_route" "default_route" {
   gateway_id             = aws_internet_gateway.webatspeed_internet_gateway.id
 }
 
-
-resource "aws_db_subnet_group" "webatspeed_rds_subnet_group" {
-  count      = var.create_db_subnet_group ? 1 : 0
-  name       = "webatspeed_rds_subnet_group"
-  subnet_ids = aws_subnet.webatspeed_private_subnet.*.id
-  tags = {
-    Name = "webatspeed_rds_sng"
-  }
-}
