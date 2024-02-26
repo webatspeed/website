@@ -51,8 +51,8 @@ locals {
       description = "mongodb access"
       ingress = {
         mongodb = {
-          from        = 27018
-          to          = 27018
+          from        = 27017
+          to          = 27017
           protocol    = "tcp"
           cidr_blocks = [local.vpc_cidr]
         }
