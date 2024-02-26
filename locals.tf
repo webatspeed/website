@@ -34,6 +34,18 @@ locals {
         }
       }
     }
+    subscription = {
+      name        = "subscription_sg"
+      description = "subscription access"
+      ingress = {
+        subscription = {
+          from        = 8080
+          to          = 8080
+          protocol    = "tcp"
+          cidr_blocks = [local.vpc_cidr]
+        }
+      }
+    }
     mongodb = {
       name        = "mongodb_sg"
       description = "mongodb access"
@@ -50,7 +62,7 @@ locals {
       name        = "efs_sg"
       description = "efs access"
       ingress = {
-        mongodb = {
+        efs = {
           from        = 2049
           to          = 2049
           protocol    = "tcp"

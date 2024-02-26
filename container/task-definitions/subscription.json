@@ -1,0 +1,51 @@
+[
+  {
+    "name": "subscription",
+    "image": "webatspeed/webatspeed-subscription-service:0.2.0",
+    "cpu": 256,
+    "memory": 512,
+    "portMappings": [
+      {
+        "containerPort": ${port}
+      }
+    ],
+    "environment": [
+      {
+        "name": "MONGO_HOST",
+        "value": "mongodb"
+      },
+      {
+        "name": "MONGO_USER",
+        "value": "${mongo-username}"
+      },
+      {
+        "name": "MONGO_PASS",
+        "value": "${mongo-password}"
+      },
+      {
+        "name": "AWS_ACCESS_KEY",
+        "value": "${ses-username}"
+      },
+      {
+        "name": "AWS_SECRET_KEY",
+        "value": "${ses-password}"
+      },
+      {
+        "name": "AWS_DEFAULT_REGION",
+        "value": "${region}"
+      },
+      {
+        "name": "BUCKET_NAME",
+        "value": "${bucket}"
+      },
+      {
+        "name": "EMAIL",
+        "value": "${email}"
+      },
+      {
+        "name": "CORS_ORIGIN",
+        "value": "http://*"
+      }
+    ]
+  }
+]

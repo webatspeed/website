@@ -67,7 +67,7 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
   name            = aws_ecs_task_definition.webatspeed_task_mongodb.family
   task_definition = aws_ecs_task_definition.webatspeed_task_mongodb.arn
   launch_type     = "FARGATE"
-  desired_count   = 0
+  desired_count   = 0 //1
 
   network_configuration {
     security_groups = var.mongodb_sg
@@ -122,5 +122,43 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
     target_group_arn = var.lb_target_group_arn
     container_name   = aws_ecs_task_definition.webatspeed_task_frontend.family
     container_port   = var.lb_port
+  }
+}
+
+resource "aws_ecs_task_definition" "webatspeed_task_subscription" {
+  family                   = "subscription"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = 256
+  memory                   = 512
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+
+  container_definitions = templatefile("${path.module}/task-definitions/subscription.json", {
+    port           = var.port
+    mongo-username = var.db_user
+    mongo-password = var.db_password
+    ses-username   = var.ses_username
+    ses-password   = var.ses_password
+    region         = var.region
+    bucket         = var.bucket
+    email          = var.email
+  })
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+}
+
+resource "aws_ecs_service" "webatspeed_service_subscription" {
+  cluster         = aws_ecs_cluster.webatspeed_cluster.id
+  name            = aws_ecs_task_definition.webatspeed_task_subscription.family
+  task_definition = aws_ecs_task_definition.webatspeed_task_subscription.arn
+  launch_type     = "FARGATE"
+  desired_count   = 0
+
+  network_configuration {
+    security_groups = var.subscription_sg
+    subnets         = var.private_subnet_ids
   }
 }

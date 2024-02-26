@@ -66,4 +66,10 @@ module "container" {
   db_password         = var.db_password
   lb_target_group_arn = module.loadbalancing.lb_target_group_arn
   lb_port             = 3000
+  bucket              = module.mailing.bucket_name
+  email               = var.email
+  port                = 8080
+  ses_username        = module.mailing.smtp_username
+  ses_password        = module.mailing.smtp_password
+  subscription_sg     = module.networking.subscription_security_group
 }
