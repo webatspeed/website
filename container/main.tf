@@ -52,6 +52,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
 
     efs_volume_configuration {
       file_system_id = var.file_system_id
+      root_directory = "/data/mongodb"
     }
   }
 
