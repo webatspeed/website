@@ -46,6 +46,30 @@ locals {
         }
       }
     }
+    mongodb = {
+      name        = "mongodb_sg"
+      description = "mongodb access"
+      ingress = {
+        mongodb = {
+          from        = 27018
+          to          = 27018
+          protocol    = "tcp"
+          cidr_blocks = [local.vpc_cidr]
+        }
+      }
+    }
+    efs = {
+      name        = "efs_sg"
+      description = "efs access"
+      ingress = {
+        mongodb = {
+          from        = 2049
+          to          = 2049
+          protocol    = "tcp"
+          cidr_blocks = [local.vpc_cidr]
+        }
+      }
+    }
   }
 }
 

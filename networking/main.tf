@@ -69,6 +69,37 @@ resource "aws_route_table_association" "webatspeed_public_assoc" {
   route_table_id = aws_route_table.webatspeed_public_rt.id
 }
 
+resource "aws_eip" "webatspeed_nat_eip" {
+  count      = var.public_subnet_count
+  domain     = "vpc"
+  depends_on = [aws_internet_gateway.webatspeed_internet_gateway]
+}
+
+resource "aws_nat_gateway" "webatspeed_nat_gateway" {
+  count         = var.public_subnet_count
+  allocation_id = element(aws_eip.webatspeed_nat_eip.*.id, count.index)
+  subnet_id     = element(aws_subnet.webatspeed_public_subnet.*.id, count.index)
+  depends_on    = [aws_internet_gateway.webatspeed_internet_gateway]
+}
+
+resource "aws_route_table" "webatspeed_private_rt" {
+  count  = var.public_subnet_count
+  vpc_id = aws_vpc.webatspeed-vpc.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.webatspeed_nat_gateway[count.index].id
+  }
+  tags = {
+    Name = "private-${count.index}"
+  }
+}
+
+resource "aws_route_table_association" "webatspeed_private_assoc" {
+  count          = var.public_subnet_count
+  subnet_id      = aws_subnet.webatspeed_private_subnet[count.index].id
+  route_table_id = aws_route_table.webatspeed_private_rt[count.index].id
+}
 
 //noinspection HILUnresolvedReference
 resource "aws_security_group" "webatspeed_sg" {

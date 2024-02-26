@@ -45,6 +45,13 @@ module "mailing" {
   attachment_dir  = "attachments"
 }
 
+module "storage" {
+  source = "./storage"
+
+  efs_sg             = module.networking.efs_security_group
+  private_subnet_ids = module.networking.private_subnet_ids
+}
+
 module "database" {
   source = "./database"
 
@@ -90,6 +97,12 @@ module "compute" {
 module "container" {
   source = "./container"
 
-  enable_insights = true
-  cluster_name    = "webatspeed-cluster"
+  enable_insights    = true
+  cluster_name       = "webatspeed-cluster"
+  region             = var.aws_region
+  private_subnet_ids = module.networking.private_subnet_ids
+  mongodb_sg         = module.networking.mongo_security_group
+  file_system_id     = module.storage.file_system_id
+  db_user            = var.db_user
+  db_password        = var.db_password
 }

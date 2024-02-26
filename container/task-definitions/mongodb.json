@@ -1,0 +1,27 @@
+[
+  {
+    "name": "mongodb",
+    "image": "public.ecr.aws/docker/library/mongo:latest",
+    "cpu": 256,
+    "memory": 512,
+    "portMappings": [
+      {
+        "containerPort": 27018
+      }
+    ],
+    "environment": [
+      {
+        "name": "MONGO_INITDB_ROOT_USERNAME",
+        "value": "${username}"
+      },
+      {
+        "name": "MONGO_INITDB_ROOT_PASSWORD",
+        "value": "${password}"
+      },
+      {
+        "name": "MONGODB_INITDB_DATABASE",
+        "value": "subscription"
+      }
+    ]
+  }
+]
