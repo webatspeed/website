@@ -97,6 +97,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/frontend.json", {
+    port = var.lb_port
   })
 
   runtime_platform {
@@ -113,7 +114,13 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
   desired_count   = 1
 
   network_configuration {
-    security_groups = var.frontend_sg
+    security_groups = [var.frontend_sg]
     subnets         = var.private_subnet_ids
+  }
+
+  load_balancer {
+    target_group_arn = var.lb_target_group_arn
+    container_name   = aws_ecs_task_definition.webatspeed_task_frontend.family
+    container_port   = var.lb_port
   }
 }

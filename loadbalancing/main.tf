@@ -6,10 +6,12 @@ resource "aws_lb" "webatspeed_lb" {
 }
 
 resource "aws_lb_target_group" "webatspeed_tg" {
-  name     = "webatspeed-lb-tg-${substr(uuid(), 0, 3)}"
-  port     = var.tg_port
-  protocol = var.tg_protocol
-  vpc_id   = var.vpc_id
+  name        = "webatspeed-lb-tg-${substr(uuid(), 0, 3)}"
+  port        = var.tg_port
+  protocol    = var.tg_protocol
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
   lifecycle {
     ignore_changes        = [name]
     create_before_destroy = true

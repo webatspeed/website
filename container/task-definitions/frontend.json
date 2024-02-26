@@ -6,7 +6,7 @@
     "memory": 512,
     "portMappings": [
       {
-        "containerPort": 3000
+        "containerPort": ${port}
       }
     ]
   }

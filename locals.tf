@@ -27,18 +27,6 @@ locals {
           cidr_blocks = ["0.0.0.0/0"]
         }
         frontend = {
-          from        = 8000
-          to          = 8000
-          protocol    = "tcp"
-          cidr_blocks = [local.vpc_cidr]
-        }
-      }
-    }
-    frontend = {
-      name        = "frontend_sg"
-      description = "frontend access"
-      ingress = {
-        mongodb = {
           from        = 3000
           to          = 3000
           protocol    = "tcp"

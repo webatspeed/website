@@ -55,13 +55,15 @@ module "storage" {
 module "container" {
   source = "./container"
 
-  enable_insights    = true
-  cluster_name       = "webatspeed-cluster"
-  region             = var.aws_region
-  private_subnet_ids = module.networking.private_subnet_ids
-  mongodb_sg         = module.networking.mongo_security_group
-  frontend_sg        = module.networking.fe_security_group
-  file_system_id     = module.storage.file_system_id
-  db_user            = var.db_user
-  db_password        = var.db_password
+  enable_insights     = true
+  cluster_name        = "webatspeed-cluster"
+  region              = var.aws_region
+  private_subnet_ids  = module.networking.private_subnet_ids
+  mongodb_sg          = module.networking.mongo_security_group
+  frontend_sg         = module.networking.public_sg
+  file_system_id      = module.storage.file_system_id
+  db_user             = var.db_user
+  db_password         = var.db_password
+  lb_target_group_arn = module.loadbalancing.lb_target_group_arn
+  lb_port             = 3000
 }
