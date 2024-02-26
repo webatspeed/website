@@ -11,6 +11,8 @@ variable "private_subnet_ids" {}
 
 variable "mongodb_sg" {}
 
+variable "frontend_sg" {}
+
 variable "file_system_id" {}
 
 variable "db_user" {}

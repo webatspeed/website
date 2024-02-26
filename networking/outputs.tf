@@ -18,6 +18,10 @@ output "db_security_group" {
   value = [aws_security_group.webatspeed_sg["rds"].id]
 }
 
+output "fe_security_group" {
+  value = [aws_security_group.webatspeed_sg["frontend"].id]
+}
+
 output "mongo_security_group" {
   value = [aws_security_group.webatspeed_sg["mongodb"].id]
 }

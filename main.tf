@@ -102,6 +102,7 @@ module "container" {
   region             = var.aws_region
   private_subnet_ids = module.networking.private_subnet_ids
   mongodb_sg         = module.networking.mongo_security_group
+  frontend_sg        = module.networking.fe_security_group
   file_system_id     = module.storage.file_system_id
   db_user            = var.db_user
   db_password        = var.db_password

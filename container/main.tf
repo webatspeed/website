@@ -67,7 +67,7 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
   name            = aws_ecs_task_definition.webatspeed_task_mongodb.family
   task_definition = aws_ecs_task_definition.webatspeed_task_mongodb.arn
   launch_type     = "FARGATE"
-  desired_count   = 1
+  desired_count   = 0
 
   network_configuration {
     security_groups = var.mongodb_sg
@@ -85,5 +85,35 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
         awslogs-stream-prefix : aws_ecs_task_definition.webatspeed_task_mongodb.family
       }
     }
+  }
+}
+
+resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
+  family                   = "frontend"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = 256
+  memory                   = 512
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+
+  container_definitions = templatefile("${path.module}/task-definitions/frontend.json", {
+  })
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+}
+
+resource "aws_ecs_service" "webatspeed_service_frontend" {
+  cluster         = aws_ecs_cluster.webatspeed_cluster.id
+  name            = aws_ecs_task_definition.webatspeed_task_frontend.family
+  task_definition = aws_ecs_task_definition.webatspeed_task_frontend.arn
+  launch_type     = "FARGATE"
+  desired_count   = 1
+
+  network_configuration {
+    security_groups = var.frontend_sg
+    subnets         = var.private_subnet_ids
   }
 }

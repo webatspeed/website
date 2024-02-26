@@ -46,6 +46,18 @@ locals {
         }
       }
     }
+    frontend = {
+      name        = "frontend_sg"
+      description = "frontend access"
+      ingress = {
+        mongodb = {
+          from        = 3000
+          to          = 3000
+          protocol    = "tcp"
+          cidr_blocks = [local.vpc_cidr]
+        }
+      }
+    }
     mongodb = {
       name        = "mongodb_sg"
       description = "mongodb access"
