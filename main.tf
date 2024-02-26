@@ -70,30 +70,6 @@ module "database" {
   maintenance_window      = "Sun:04:01-Sun:05:00"
 }
 
-module "compute" {
-  source = "./compute"
-
-  instance_count = 1
-  instance_type  = "t3.small"
-  vol_size       = 20
-
-  public_sg      = module.networking.public_sg
-  public_subnets = module.networking.public_subnets
-
-  lb_target_group_arn = module.loadbalancing.lb_target_group_arn
-  key_name            = "webatspeed-key"
-  public_key_path     = var.public_key_path
-  private_key_path    = var.private_key_path
-  orch_config_path    = "${path.cwd}/orchestration/config/"
-  tg_port             = 8000
-
-  db_endpoint = module.database.db_endpoint
-  db_name     = var.db_name
-  db_password = var.db_password
-  db_user     = var.db_user
-  token       = var.token
-}
-
 module "container" {
   source = "./container"
 
