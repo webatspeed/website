@@ -34,3 +34,5 @@ variable "ses_password" {}
 variable "bucket" {}
 
 variable "email" {}
+
+variable "file_system_access_id" {}

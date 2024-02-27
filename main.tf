@@ -55,21 +55,22 @@ module "storage" {
 module "container" {
   source = "./container"
 
-  enable_insights     = true
-  cluster_name        = "webatspeed-cluster"
-  region              = var.aws_region
-  private_subnet_ids  = module.networking.private_subnet_ids
-  mongodb_sg          = module.networking.mongo_security_group
-  frontend_sg         = module.networking.public_sg
-  file_system_id      = module.storage.file_system_id
-  db_user             = var.db_user
-  db_password         = var.db_password
-  lb_target_group_arn = module.loadbalancing.lb_target_group_arn
-  lb_port             = 3000
-  bucket              = module.mailing.bucket_name
-  email               = var.email
-  port                = 8080
-  ses_username        = module.mailing.smtp_username
-  ses_password        = module.mailing.smtp_password
-  subscription_sg     = module.networking.subscription_security_group
+  enable_insights       = true
+  cluster_name          = "webatspeed-cluster"
+  region                = var.aws_region
+  private_subnet_ids    = module.networking.private_subnet_ids
+  mongodb_sg            = module.networking.mongo_security_group
+  frontend_sg           = module.networking.public_sg
+  file_system_id        = module.storage.file_system_id
+  db_user               = var.db_user
+  db_password           = var.db_password
+  lb_target_group_arn   = module.loadbalancing.lb_target_group_arn
+  lb_port               = 3000
+  bucket                = module.mailing.bucket_name
+  email                 = var.email
+  port                  = 8080
+  ses_username          = module.mailing.smtp_username
+  ses_password          = module.mailing.smtp_password
+  subscription_sg       = module.networking.subscription_security_group
+  file_system_access_id = module.storage.file_system_access_id
 }

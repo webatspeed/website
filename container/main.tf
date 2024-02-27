@@ -51,8 +51,11 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
     name = "mongodb-volume"
 
     efs_volume_configuration {
-      file_system_id = var.file_system_id
-      root_directory = "/data/mongodb"
+      file_system_id     = var.file_system_id
+      transit_encryption = "ENABLED"
+      authorization_config {
+        access_point_id = var.file_system_access_id
+      }
     }
   }
 
@@ -67,7 +70,7 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
   name            = aws_ecs_task_definition.webatspeed_task_mongodb.family
   task_definition = aws_ecs_task_definition.webatspeed_task_mongodb.arn
   launch_type     = "FARGATE"
-  desired_count   = 0 //1
+  desired_count   = 1
 
   network_configuration {
     security_groups = var.mongodb_sg
