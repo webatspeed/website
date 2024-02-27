@@ -12,7 +12,7 @@
     "environment": [
       {
         "name": "MONGO_HOST",
-        "value": "mongodb"
+        "value": "${mongo-host}"
       },
       {
         "name": "MONGO_USER",

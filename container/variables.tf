@@ -42,3 +42,11 @@ variable "count_mongodb" {}
 variable "count_subscription" {}
 
 variable "count_frontend" {}
+
+variable "registry_frontend_arn" {}
+
+variable "registry_subscription_arn" {}
+
+variable "registry_mongodb_arn" {}
+
+variable "local_namespace" {}

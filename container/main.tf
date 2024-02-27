@@ -74,6 +74,10 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
     security_groups = var.mongodb_sg
     subnets         = var.private_subnet_ids
   }
+
+  service_registries {
+    registry_arn = var.registry_mongodb_arn
+  }
 }
 
 resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
@@ -111,6 +115,10 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
     container_name   = aws_ecs_task_definition.webatspeed_task_frontend.family
     container_port   = var.lb_port
   }
+
+  service_registries {
+    registry_arn = var.registry_frontend_arn
+  }
 }
 
 resource "aws_ecs_task_definition" "webatspeed_task_subscription" {
@@ -123,6 +131,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_subscription" {
 
   container_definitions = templatefile("${path.module}/task-definitions/subscription.json", {
     port           = var.port
+    mongo-host     = "mongodb.${var.local_namespace}"
     mongo-username = var.db_user
     mongo-password = var.db_password
     ses-username   = var.ses_username
@@ -148,5 +157,9 @@ resource "aws_ecs_service" "webatspeed_service_subscription" {
   network_configuration {
     security_groups = var.subscription_sg
     subnets         = var.private_subnet_ids
+  }
+
+  service_registries {
+    registry_arn = var.registry_subscription_arn
   }
 }
