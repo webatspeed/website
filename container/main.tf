@@ -41,8 +41,8 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/mongodb.json", {
-    username  = var.db_user
-    password  = var.db_password
+    username = var.db_user
+    password = var.db_password
   })
 
   volume {
@@ -68,7 +68,7 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
   name            = aws_ecs_task_definition.webatspeed_task_mongodb.family
   task_definition = aws_ecs_task_definition.webatspeed_task_mongodb.arn
   launch_type     = "FARGATE"
-  desired_count   = 1
+  desired_count   = var.count_mongodb
 
   network_configuration {
     security_groups = var.mongodb_sg
@@ -99,7 +99,7 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
   name            = aws_ecs_task_definition.webatspeed_task_frontend.family
   task_definition = aws_ecs_task_definition.webatspeed_task_frontend.arn
   launch_type     = "FARGATE"
-  desired_count   = 1
+  desired_count   = var.count_frontend
 
   network_configuration {
     security_groups = [var.frontend_sg]
@@ -143,7 +143,7 @@ resource "aws_ecs_service" "webatspeed_service_subscription" {
   name            = aws_ecs_task_definition.webatspeed_task_subscription.family
   task_definition = aws_ecs_task_definition.webatspeed_task_subscription.arn
   launch_type     = "FARGATE"
-  desired_count   = 0
+  desired_count   = var.count_subscription
 
   network_configuration {
     security_groups = var.subscription_sg

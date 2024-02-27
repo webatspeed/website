@@ -36,3 +36,9 @@ variable "bucket" {}
 variable "email" {}
 
 variable "file_system_access_id" {}
+
+variable "count_mongodb" {}
+
+variable "count_subscription" {}
+
+variable "count_frontend" {}

@@ -73,4 +73,8 @@ module "container" {
   ses_password          = module.mailing.smtp_password
   subscription_sg       = module.networking.subscription_security_group
   file_system_access_id = module.storage.file_system_access_id
+
+  count_frontend     = 1
+  count_mongodb      = 1
+  count_subscription = 0
 }
