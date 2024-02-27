@@ -41,8 +41,6 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/mongodb.json", {
-    region    = var.region
-    log_group = aws_cloudwatch_log_group.webatspeed_log_group.name
     username  = var.db_user
     password  = var.db_password
   })
@@ -75,19 +73,6 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
   network_configuration {
     security_groups = var.mongodb_sg
     subnets         = var.private_subnet_ids
-  }
-
-  service_connect_configuration {
-    enabled = true
-
-    log_configuration {
-      log_driver = "awslogs"
-      options = {
-        awslogs-group : aws_cloudwatch_log_group.webatspeed_log_group.name
-        awslogs-region : var.region
-        awslogs-stream-prefix : aws_ecs_task_definition.webatspeed_task_mongodb.family
-      }
-    }
   }
 }
 
