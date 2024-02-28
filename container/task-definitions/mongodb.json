@@ -3,7 +3,7 @@
     "name": "mongodb",
     "image": "public.ecr.aws/docker/library/mongo:latest",
     "cpu": 256,
-    "memory": 512,
+    "memory": 1024,
     "portMappings": [
       {
         "containerPort": 27017
