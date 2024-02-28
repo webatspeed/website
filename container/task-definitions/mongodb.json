@@ -22,6 +22,14 @@
         "name": "MONGODB_INITDB_DATABASE",
         "value": "subscription"
       }
-    ]
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "mongodb"
+      }
+    }
   }
 ]

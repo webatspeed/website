@@ -32,6 +32,28 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role.json
 }
 
+data "aws_iam_policy_document" "ecs_execution_role_policy" {
+  version = "2012-10-17"
+
+  statement {
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "ecs_execution_role_policy" {
+  policy = data.aws_iam_policy_document.ecs_execution_role_policy.json
+  role   = aws_iam_role.ecs_task_execution_role.id
+}
+
 resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
   family                   = "mongodb"
   requires_compatibilities = ["FARGATE"]
@@ -41,8 +63,10 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/mongodb.json", {
-    username = var.db_user
-    password = var.db_password
+    username  = var.db_user
+    password  = var.db_password
+    region    = var.region
+    log_group = aws_cloudwatch_log_group.webatspeed_log_group.name
   })
 
   volume {
@@ -89,7 +113,9 @@ resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/frontend.json", {
-    port = var.lb_port
+    port      = var.lb_port
+    region    = var.region
+    log_group = aws_cloudwatch_log_group.webatspeed_log_group.name
   })
 
   runtime_platform {
@@ -139,6 +165,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_subscription" {
     region         = var.region
     bucket         = var.bucket
     email          = var.email
+    log_group      = aws_cloudwatch_log_group.webatspeed_log_group.name
   })
 
   runtime_platform {
