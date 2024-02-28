@@ -1,7 +1,7 @@
 [
   {
     "name": "frontend",
-    "image": "webatspeed/webatspeed-fe:0.4.0",
+    "image": "webatspeed/webatspeed-fe:0.6.0",
     "cpu": 256,
     "memory": 512,
     "portMappings": [

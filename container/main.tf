@@ -120,7 +120,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "X86_64"
+    cpu_architecture        = "ARM64"
   }
 }
 
