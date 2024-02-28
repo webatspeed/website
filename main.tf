@@ -82,7 +82,7 @@ module "container" {
   registry_frontend_arn     = module.discovery.registry_frontend_arn
   registry_mongodb_arn      = module.discovery.registry_mongodb_arn
   registry_subscription_arn = module.discovery.registry_subscription_arn
-  local_namespace           = module.discovery.local_namespace
+  mongo_host                = module.discovery.mongo_host
 
   count_frontend     = 1
   count_mongodb      = 1

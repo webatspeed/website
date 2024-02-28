@@ -49,4 +49,4 @@ variable "registry_subscription_arn" {}
 
 variable "registry_mongodb_arn" {}
 
-variable "local_namespace" {}
+variable "mongo_host" {}

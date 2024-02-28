@@ -131,7 +131,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_subscription" {
 
   container_definitions = templatefile("${path.module}/task-definitions/subscription.json", {
     port           = var.port
-    mongo-host     = "mongodb.${var.local_namespace}"
+    mongo-host     = var.mongo_host
     mongo-username = var.db_user
     mongo-password = var.db_password
     ses-username   = var.ses_username

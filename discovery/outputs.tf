@@ -13,3 +13,7 @@ output "registry_mongodb_arn" {
 output "local_namespace" {
   value = aws_service_discovery_private_dns_namespace.webatspeed_private_sd.name
 }
+
+output "mongo_host" {
+  value = "${aws_service_discovery_service.webatspeed_ds_mongodb.name}.${aws_service_discovery_private_dns_namespace.webatspeed_private_sd.name}"
+}
