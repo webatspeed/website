@@ -86,5 +86,5 @@ module "container" {
 
   count_frontend     = 1
   count_mongodb      = 1
-  count_subscription = 0
+  count_subscription = 1
 }
