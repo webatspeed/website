@@ -42,7 +42,11 @@ data "aws_iam_policy_document" "ecs_execution_role_policy" {
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
       "logs:CreateLogStream",
-      "logs:PutLogEvents"
+      "logs:PutLogEvents",
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
     ]
 
     resources = ["*"]
@@ -61,6 +65,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
   cpu                      = 256
   memory                   = 1024
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/mongodb.json", {
     username  = var.db_user
@@ -88,11 +93,12 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
 }
 
 resource "aws_ecs_service" "webatspeed_service_mongodb" {
-  cluster         = aws_ecs_cluster.webatspeed_cluster.id
-  name            = aws_ecs_task_definition.webatspeed_task_mongodb.family
-  task_definition = aws_ecs_task_definition.webatspeed_task_mongodb.arn
-  launch_type     = "FARGATE"
-  desired_count   = var.count_mongodb
+  cluster                = aws_ecs_cluster.webatspeed_cluster.id
+  name                   = aws_ecs_task_definition.webatspeed_task_mongodb.family
+  task_definition        = aws_ecs_task_definition.webatspeed_task_mongodb.arn
+  launch_type            = "FARGATE"
+  desired_count          = var.count_mongodb
+  enable_execute_command = true
 
   network_configuration {
     security_groups = var.mongodb_sg
