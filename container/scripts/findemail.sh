@@ -5,13 +5,14 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-MONGO_USERNAME=$(aws ecs describe-task-definition \
- --task-definition mongodb | \
- jq -r '.taskDefinition.containerDefinitions[] | select(.name == "mongodb") | .environment | .[] | select(.name == "MONGO_INITDB_ROOT_USERNAME") | .value')
+MONGO_DESCRIPTION=$(aws ecs describe-task-definition --task-definition mongodb | \
+ jq -r '.taskDefinition.containerDefinitions[] | select(.name == "mongodb") | .environment | .[]')
 
-MONGO_PASSWORD=$(aws ecs describe-task-definition \
- --task-definition mongodb | \
- jq -r '.taskDefinition.containerDefinitions[] | select(.name == "mongodb") | .environment | .[] | select(.name == "MONGO_INITDB_ROOT_PASSWORD") | .value')
+MONGO_USERNAME=$(echo $MONGO_DESCRIPTION | \
+ jq -r 'select(.name == "MONGO_INITDB_ROOT_USERNAME") | .value')
+
+MONGO_PASSWORD=$(echo $MONGO_DESCRIPTION | \
+ jq -r 'select(.name == "MONGO_INITDB_ROOT_PASSWORD") | .value')
 
 MONGO_TASK=$(aws ecs list-tasks \
  --cluster webatspeed-cluster \
