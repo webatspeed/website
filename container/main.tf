@@ -117,6 +117,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
   cpu                      = 256
   memory                   = 512
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/frontend.json", {
     port      = var.lb_port
@@ -131,11 +132,12 @@ resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
 }
 
 resource "aws_ecs_service" "webatspeed_service_frontend" {
-  cluster         = aws_ecs_cluster.webatspeed_cluster.id
-  name            = aws_ecs_task_definition.webatspeed_task_frontend.family
-  task_definition = aws_ecs_task_definition.webatspeed_task_frontend.arn
-  launch_type     = "FARGATE"
-  desired_count   = var.count_frontend
+  cluster                = aws_ecs_cluster.webatspeed_cluster.id
+  name                   = aws_ecs_task_definition.webatspeed_task_frontend.family
+  task_definition        = aws_ecs_task_definition.webatspeed_task_frontend.arn
+  launch_type            = "FARGATE"
+  desired_count          = var.count_frontend
+  enable_execute_command = true
 
   network_configuration {
     security_groups = [var.frontend_sg]
