@@ -88,3 +88,9 @@ module "container" {
   count_mongodb      = 1
   count_subscription = 1
 }
+
+module "pipeline" {
+  source = "./pipeline"
+
+  pipe_name = "pipeline"
+}
