@@ -89,8 +89,21 @@ module "container" {
   count_subscription = 1
 }
 
+module "build" {
+  source = "./build"
+
+  pipeline_role_arn = module.pipeline.pipeline_role_arn
+  docker_pass       = var.docker_pass
+  docker_user       = var.docker_user
+  cloudwatch_group  = module.container.cloudwatch_group
+  subscription_url  = module.discovery.subscription_url
+
+  image_tag_frontend = "0.7.0"
+}
+
 module "pipeline" {
   source = "./pipeline"
 
-  pipe_name = "pipeline"
+  pipe_name                = "pipeline"
+  codebuild_project_client = module.build.project_id
 }

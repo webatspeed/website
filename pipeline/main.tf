@@ -67,6 +67,16 @@ data "aws_iam_policy_document" "codepipeline_policy" {
 
     resources = ["*"]
   }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
@@ -121,7 +131,7 @@ resource "aws_codepipeline" "webatspeed_pipeline" {
       output_artifacts = ["build_output"]
 
       configuration = {
-        ProjectName = "webatspeed"
+        ProjectName = var.codebuild_project_client
       }
     }
   }

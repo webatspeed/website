@@ -17,3 +17,7 @@ output "local_namespace" {
 output "mongo_host" {
   value = "${aws_service_discovery_service.webatspeed_ds_mongodb.name}.${aws_service_discovery_private_dns_namespace.webatspeed_private_sd.name}"
 }
+
+output "subscription_url" {
+  value = "http://${aws_service_discovery_service.webatspeed_ds_subscription.name}.${aws_service_discovery_private_dns_namespace.webatspeed_private_sd.name}:8080"
+}

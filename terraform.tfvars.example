@@ -6,4 +6,6 @@ private_key_path = ""
 db_name = ""
 db_user = ""
 db_password = ""
-token = ""
+
+docker_user = ""
+docker_pass = ""

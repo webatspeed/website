@@ -28,11 +28,14 @@ variable "db_password" {
   sensitive = true
 }
 
-variable "token" {
-  type      = string
-  sensitive = true
+variable "email" {
+  type = string
 }
 
-variable "email" {
+variable "docker_user" {
+  type = string
+}
+
+variable "docker_pass" {
   type = string
 }
