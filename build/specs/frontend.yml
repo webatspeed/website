@@ -7,14 +7,23 @@ phases:
       - docker login -u $DOCKER_USER -p $DOCKER_PASS
       - echo Setting subscription service URL...
       - echo "NEXT_PUBLIC_API_URL=$SUBSCRIPTION_URL" > .env.production.local
+      - echo Creating timestamp...
+      - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+      - echo "IMAGE_TAG = ${IMAGE_TAG}"
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG -t $IMAGE_REPO_NAME:latest .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $IMAGE_REPO_NAME:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push --all-tags $IMAGE_REPO_NAME
+      - printf '[{"name":"frontend",\"imageUri":"%s"}]' $IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json

@@ -77,6 +77,21 @@ data "aws_iam_policy_document" "codepipeline_policy" {
 
     resources = ["*"]
   }
+
+  statement {
+    actions = [
+      "ecs:*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "iam:PassRole"
+    ]
+    resources = ["*"]
+  }
+
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
@@ -132,6 +147,24 @@ resource "aws_codepipeline" "webatspeed_pipeline" {
 
       configuration = {
         ProjectName = var.codebuild_project_client
+      }
+    }
+  }
+
+  stage {
+    name = "Deploy"
+
+    action {
+      category        = "Deploy"
+      name            = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      version         = "1"
+      input_artifacts = ["build_output"]
+
+      configuration = {
+        ClusterName = var.cluster_name
+        ServiceName = var.frontend_name
       }
     }
   }

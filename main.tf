@@ -62,7 +62,7 @@ module "container" {
   source = "./container"
 
   enable_insights           = true
-  cluster_name              = "webatspeed-cluster"
+  cluster_name              = local.cluster_name
   region                    = var.aws_region
   private_subnet_ids        = module.networking.private_subnet_ids
   mongodb_sg                = module.networking.mongo_security_group
@@ -97,8 +97,6 @@ module "build" {
   docker_user       = var.docker_user
   cloudwatch_group  = module.container.cloudwatch_group
   subscription_url  = module.discovery.subscription_url
-
-  image_tag_frontend = "0.7.0"
 }
 
 module "pipeline" {
@@ -106,4 +104,6 @@ module "pipeline" {
 
   pipe_name                = "pipeline"
   codebuild_project_client = module.build.project_id
+  cluster_name             = local.cluster_name
+  frontend_name            = "frontend"
 }

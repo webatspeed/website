@@ -1,5 +1,6 @@
 locals {
-  vpc_cidr = "10.123.0.0/16"
+  vpc_cidr     = "10.123.0.0/16"
+  cluster_name = "webatspeed-cluster"
 }
 
 locals {

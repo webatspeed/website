@@ -153,6 +153,10 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
   service_registries {
     registry_arn = var.registry_frontend_arn
   }
+
+  lifecycle {
+    ignore_changes = [task_definition] # because the pipeline changes it
+  }
 }
 
 resource "aws_ecs_task_definition" "webatspeed_task_subscription" {

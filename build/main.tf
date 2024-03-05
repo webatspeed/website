@@ -32,11 +32,6 @@ resource "aws_codebuild_project" "webatspeed_build_frontend" {
     }
 
     environment_variable {
-      name  = "IMAGE_TAG"
-      value = var.image_tag_frontend
-    }
-
-    environment_variable {
       name  = "SUBSCRIPTION_URL"
       value = var.subscription_url
     }
