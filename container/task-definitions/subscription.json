@@ -1,7 +1,7 @@
 [
   {
     "name": "subscription",
-    "image": "webatspeed/webatspeed-subscription-service:0.3.0",
+    "image": "webatspeed/subscription-service:latest",
     "cpu": 256,
     "memory": 1024,
     "portMappings": [

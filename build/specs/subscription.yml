@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging into Docker Hub...
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - echo Creating timestamp...
+      - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+      - echo "IMAGE_TAG = ${IMAGE_TAG}"
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - ./gradlew bootBuildImage --imageName=$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $IMAGE_REPO_NAME:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push --all-tags $IMAGE_REPO_NAME
+      - printf '[{"name":"subscription",\"imageUri":"%s"}]' $IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json

@@ -157,7 +157,7 @@ resource "aws_codepipeline" "webatspeed_pipeline" {
       output_artifacts = ["build_output"]
 
       configuration = {
-        ProjectName = var.codebuild_project_client
+        ProjectName = var.codebuild_project_client_frontend
       }
     }
   }
@@ -176,6 +176,71 @@ resource "aws_codepipeline" "webatspeed_pipeline" {
       configuration = {
         ClusterName = var.cluster_name
         ServiceName = var.frontend_name
+      }
+    }
+  }
+}
+
+resource "aws_codepipeline" "webatspeed_pipeline_subscription" {
+  name     = var.pipeline_name_subscription
+  role_arn = aws_iam_role.webatspeed_pipeline_role.arn
+
+  artifact_store {
+    location = aws_s3_bucket.webatspeed_pipeline_bucket.id
+    type     = "S3"
+  }
+
+  stage {
+    name = "Source"
+
+    action {
+      category         = "Source"
+      name             = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
+      output_artifacts = ["source_output"]
+
+      configuration = {
+        ConnectionArn    = aws_codestarconnections_connection.webatspeed_connection.arn
+        FullRepositoryId = "webatspeed/subscription-service"
+        BranchName       = "main"
+      }
+    }
+  }
+
+  stage {
+    name = "Build"
+
+    action {
+      category         = "Build"
+      name             = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_output"]
+
+      configuration = {
+        ProjectName = var.codebuild_project_client_subscription
+      }
+    }
+  }
+
+  stage {
+    name = "Deploy"
+
+    action {
+      category        = "Deploy"
+      name            = "Deploy"
+      owner           = "AWS"
+      provider        = "ECS"
+      version         = "1"
+      input_artifacts = ["build_output"]
+
+      configuration = {
+        ClusterName = var.cluster_name
+        ServiceName = var.subscription_name
       }
     }
   }

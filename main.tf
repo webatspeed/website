@@ -98,8 +98,11 @@ module "build" {
 module "pipeline" {
   source = "./pipeline"
 
-  codebuild_project_client = module.build.project_id
-  cluster_name             = local.cluster_name
-  pipeline_name_frontend   = "frontend-pipeline"
-  frontend_name            = "frontend"
+  codebuild_project_client_frontend     = module.build.project_id_frontend
+  codebuild_project_client_subscription = module.build.project_id_subscription
+  cluster_name                          = local.cluster_name
+  pipeline_name_frontend                = "frontend-pipeline"
+  frontend_name                         = "frontend"
+  pipeline_name_subscription            = "subscription-pipeline"
+  subscription_name                     = "subscription"
 }
