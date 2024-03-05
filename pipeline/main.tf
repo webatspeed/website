@@ -32,6 +32,17 @@ resource "random_id" "webatspeed_random_id_pipeline" {
   byte_length = 2
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "webatspeed_pipeline_bucket_lifecycle" {
+  bucket = aws_s3_bucket.webatspeed_pipeline_bucket.id
+  rule {
+    id     = "expire-pipeline-files"
+    status = "Enabled"
+    expiration {
+      days = 3
+    }
+  }
+}
+
 resource "aws_s3_bucket" "webatspeed_pipeline_bucket" {
   bucket        = "${var.pipeline_name_frontend}-${random_id.webatspeed_random_id_pipeline.dec}"
   force_destroy = true
