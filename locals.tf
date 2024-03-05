@@ -6,13 +6,16 @@ locals {
 locals {
   containers = {
     frontend = {
-      port = 3000
+      port          = 3000
+      desired_count = 1
     }
     subscription = {
-      port = 8080
+      port          = 8080
+      desired_count = 1
     }
     mongodb = {
-      port = 27017
+      port          = 27017
+      desired_count = 1
     }
   }
 }

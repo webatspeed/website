@@ -71,7 +71,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
     username  = var.db_user
     password  = var.db_password
     region    = var.region
-    port      = var.mongo_port
+    port      = var.containers.mongodb.port
     log_group = aws_cloudwatch_log_group.webatspeed_log_group.name
   })
 
@@ -98,7 +98,7 @@ resource "aws_ecs_service" "webatspeed_service_mongodb" {
   name                   = aws_ecs_task_definition.webatspeed_task_mongodb.family
   task_definition        = aws_ecs_task_definition.webatspeed_task_mongodb.arn
   launch_type            = "FARGATE"
-  desired_count          = var.count_mongodb
+  desired_count          = var.containers.mongodb.desired_count
   enable_execute_command = true
 
   network_configuration {
@@ -121,7 +121,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_frontend" {
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/frontend.json", {
-    port      = var.lb_port
+    port      = var.containers.frontend.port
     region    = var.region
     log_group = aws_cloudwatch_log_group.webatspeed_log_group.name
   })
@@ -137,7 +137,7 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
   name                   = aws_ecs_task_definition.webatspeed_task_frontend.family
   task_definition        = aws_ecs_task_definition.webatspeed_task_frontend.arn
   launch_type            = "FARGATE"
-  desired_count          = var.count_frontend
+  desired_count          = var.containers.frontend.desired_count
   enable_execute_command = true
 
   network_configuration {
@@ -148,7 +148,7 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
   load_balancer {
     target_group_arn = var.lb_target_group_arn
     container_name   = aws_ecs_task_definition.webatspeed_task_frontend.family
-    container_port   = var.lb_port
+    container_port   = var.containers.frontend.port
   }
 
   service_registries {
@@ -169,7 +169,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_subscription" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/subscription.json", {
-    port           = var.port
+    port           = var.containers.subscription.port
     mongo-host     = var.mongo_host
     mongo-username = var.db_user
     mongo-password = var.db_password
@@ -192,7 +192,7 @@ resource "aws_ecs_service" "webatspeed_service_subscription" {
   name            = aws_ecs_task_definition.webatspeed_task_subscription.family
   task_definition = aws_ecs_task_definition.webatspeed_task_subscription.arn
   launch_type     = "FARGATE"
-  desired_count   = var.count_subscription
+  desired_count   = var.containers.subscription.desired_count
 
   network_configuration {
     security_groups = var.subscription_sg

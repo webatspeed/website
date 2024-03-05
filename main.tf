@@ -72,10 +72,8 @@ module "container" {
   db_user                   = var.db_user
   db_password               = var.db_password
   lb_target_group_arn       = module.loadbalancing.lb_target_group_arn
-  lb_port                   = local.containers.frontend.port
   bucket                    = module.mailing.bucket_name
   email                     = var.email
-  port                      = local.containers.subscription.port
   ses_username              = module.mailing.smtp_username
   ses_password              = module.mailing.smtp_password
   subscription_sg           = module.networking.subscription_security_group
@@ -84,11 +82,7 @@ module "container" {
   registry_mongodb_arn      = module.discovery.registry_mongodb_arn
   registry_subscription_arn = module.discovery.registry_subscription_arn
   mongo_host                = module.discovery.mongo_host
-  mongo_port                = local.containers.mongodb.port
-
-  count_frontend     = 1
-  count_mongodb      = 1
-  count_subscription = 1
+  containers                = local.containers
 }
 
 module "build" {
