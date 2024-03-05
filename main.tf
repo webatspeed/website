@@ -55,7 +55,8 @@ module "storage" {
 module "discovery" {
   source = "./discovery"
 
-  vpc_id = module.networking.vpc_id
+  vpc_id            = module.networking.vpc_id
+  subscription_port = local.containers.subscription.port
 }
 
 module "container" {
@@ -71,10 +72,10 @@ module "container" {
   db_user                   = var.db_user
   db_password               = var.db_password
   lb_target_group_arn       = module.loadbalancing.lb_target_group_arn
-  lb_port                   = 3000
+  lb_port                   = local.containers.frontend.port
   bucket                    = module.mailing.bucket_name
   email                     = var.email
-  port                      = 8080
+  port                      = local.containers.subscription.port
   ses_username              = module.mailing.smtp_username
   ses_password              = module.mailing.smtp_password
   subscription_sg           = module.networking.subscription_security_group
@@ -83,6 +84,7 @@ module "container" {
   registry_mongodb_arn      = module.discovery.registry_mongodb_arn
   registry_subscription_arn = module.discovery.registry_subscription_arn
   mongo_host                = module.discovery.mongo_host
+  mongo_port                = local.containers.mongodb.port
 
   count_frontend     = 1
   count_mongodb      = 1

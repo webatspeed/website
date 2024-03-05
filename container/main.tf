@@ -71,6 +71,7 @@ resource "aws_ecs_task_definition" "webatspeed_task_mongodb" {
     username  = var.db_user
     password  = var.db_password
     region    = var.region
+    port      = var.mongo_port
     log_group = aws_cloudwatch_log_group.webatspeed_log_group.name
   })
 

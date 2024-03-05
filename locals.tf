@@ -4,6 +4,20 @@ locals {
 }
 
 locals {
+  containers = {
+    frontend = {
+      port = 3000
+    }
+    subscription = {
+      port = 8080
+    }
+    mongodb = {
+      port = 27017
+    }
+  }
+}
+
+locals {
   security_groups = {
     public = {
       name        = "public_sg"
@@ -28,8 +42,8 @@ locals {
           cidr_blocks = ["0.0.0.0/0"]
         }
         frontend = {
-          from        = 3000
-          to          = 3000
+          from        = local.containers.frontend.port
+          to          = local.containers.frontend.port
           protocol    = "tcp"
           cidr_blocks = [local.vpc_cidr]
         }
@@ -40,8 +54,8 @@ locals {
       description = "subscription access"
       ingress = {
         subscription = {
-          from        = 8080
-          to          = 8080
+          from        = local.containers.subscription.port
+          to          = local.containers.subscription.port
           protocol    = "tcp"
           cidr_blocks = [local.vpc_cidr]
         }
@@ -52,8 +66,8 @@ locals {
       description = "mongodb access"
       ingress = {
         mongodb = {
-          from        = 27017
-          to          = 27017
+          from        = local.containers.mongodb.port
+          to          = local.containers.mongodb.port
           protocol    = "tcp"
           cidr_blocks = [local.vpc_cidr]
         }

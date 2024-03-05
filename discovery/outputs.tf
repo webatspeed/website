@@ -19,5 +19,5 @@ output "mongo_host" {
 }
 
 output "subscription_url" {
-  value = "http://${aws_service_discovery_service.webatspeed_ds_subscription.name}.${aws_service_discovery_private_dns_namespace.webatspeed_private_sd.name}:8080"
+  value = "http://${aws_service_discovery_service.webatspeed_ds_subscription.name}.${aws_service_discovery_private_dns_namespace.webatspeed_private_sd.name}:${var.subscription_port}"
 }

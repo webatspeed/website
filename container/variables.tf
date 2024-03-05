@@ -50,3 +50,5 @@ variable "registry_subscription_arn" {}
 variable "registry_mongodb_arn" {}
 
 variable "mongo_host" {}
+
+variable "mongo_port" {}
