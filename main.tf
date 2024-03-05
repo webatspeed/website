@@ -102,8 +102,8 @@ module "build" {
 module "pipeline" {
   source = "./pipeline"
 
-  pipe_name                = "pipeline"
   codebuild_project_client = module.build.project_id
   cluster_name             = local.cluster_name
+  pipeline_name_frontend   = "frontend-pipeline"
   frontend_name            = "frontend"
 }

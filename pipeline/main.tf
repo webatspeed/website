@@ -16,11 +16,11 @@ data "aws_iam_policy_document" "webatspeed_pipeline_policy" {
 }
 
 resource "aws_iam_role" "webatspeed_pipeline_role" {
-  name               = "${var.pipe_name}-role"
+  name               = "${var.pipeline_name_frontend}-role"
   assume_role_policy = data.aws_iam_policy_document.webatspeed_pipeline_policy.json
 
   tags = {
-    Name = "${var.pipe_name}-role"
+    Name = "${var.pipeline_name_frontend}-role"
   }
 
   lifecycle {
@@ -33,7 +33,7 @@ resource "random_id" "webatspeed_random_id_pipeline" {
 }
 
 resource "aws_s3_bucket" "webatspeed_pipeline_bucket" {
-  bucket        = "${var.pipe_name}-${random_id.webatspeed_random_id_pipeline.dec}"
+  bucket        = "${var.pipeline_name_frontend}-${random_id.webatspeed_random_id_pipeline.dec}"
   force_destroy = true
 }
 
@@ -106,7 +106,7 @@ resource "aws_codestarconnections_connection" "webatspeed_connection" {
 }
 
 resource "aws_codepipeline" "webatspeed_pipeline" {
-  name     = var.pipe_name
+  name     = var.pipeline_name_frontend
   role_arn = aws_iam_role.webatspeed_pipeline_role.arn
 
   artifact_store {

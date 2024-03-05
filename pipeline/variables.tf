@@ -1,4 +1,4 @@
-variable "pipe_name" {}
+variable "pipeline_name_frontend" {}
 
 variable "codebuild_project_client" {}
 
