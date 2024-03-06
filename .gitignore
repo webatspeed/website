@@ -21,7 +21,6 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-orchestration/config/k3s-*.yaml*
 mailing/attachments/**
 
 !/**/.gitkeep
