@@ -32,14 +32,20 @@ open https://www.webatspeed.de
 ./container/scripts/distribute.sh
 ```
 
-## Find Email
+## Get Number of Subscribers
+
+```
+./container/scripts/countsubscribers.sh
+```
+
+## Find by Email
 
 ```
 ./container/scripts/findemail.sh name@domain.com
 ```
 
-## Get Number of Subscribers
+## Delete by Email
 
 ```
-./container/scripts/countsubscribers.sh
+./container/scripts/deletesubscriber.sh name@domain.com
 ```
