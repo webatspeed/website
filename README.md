@@ -1,16 +1,17 @@
 # Web at Speed Website
 
 - Terraform (Cloud)
-- AWS (VPC, ELB, EC2, ACM, RDS, Route 53, SES, S3)
-- Kubernetes (K3s)
+- AWS Serverless (VPC, ELB, ECS, Fargate, ACM, EFS, Route 53, Cloud Map, SES, S3)
+- AWS Developer Tools (CodePipeline, CodeBuild, GitHub Codestar Connection, IAM, S3)
 - Docker
-    - [webatspeed/webatspeed-fe](https://hub.docker.com/r/webatspeed/webatspeed-fe/tags)
-    - [webatspeed/webatspeed-subscription-service](https://hub.docker.com/r/webatspeed/webatspeed-subscription-service/tags)
+    - [webatspeed/webatspeed-fe](https://hub.docker.com/r/webatspeed/webatspeed-fe/tags) (ReactJS)
+    - [webatspeed/subscription-service](https://hub.docker.com/r/webatspeed/subscription-service/tags) (Spring Boot)
+    - [docker/library/mongo](https://gallery.ecr.aws/docker/library/mongo) (MongoDB)
 - bash
 
-## Infrastructure and Orchestration
+## Infrastructure, Orchestration, and Continuous Deployment
 
-![Infrastructure and Orchestration](infra.svg "Infrastructure and Orchestration")
+![Infrastructure, Orchestration, and Continuous Deployment](infra.svg "Infrastructure, Orchestration, and Continuous Deployment")
 
 ## Installation
 
@@ -22,37 +23,17 @@ cp terraform.tfvars.example terraform.tfvars
 vim terraform.tfvars
 terraform init && terraform apply -auto-approve
 
-cd orchestration/config
-export KUBECONFIG=$(ls -1t *.yaml | head -1)
-kubectl create secret generic mongo-credentials \
- --from-literal username='<username>' \
- --from-literal password='<password>'
-kubectl create secret generic ses-credentials \
- --from-literal username='<username>' \
- --from-literal password='<password>' \
- --from-literal email='<email>' \
- --from-literal region='<region>' \
- --from-literal bucket='<bucket>'
-
-kubectl apply -f ..
-
 open https://www.webatspeed.de
 ```
 
 ## Distribute Newsletter
 
 ```
-./orchestration/scripts/distribute.sh
-```
-
-## Backup Subscribers
-
-```
-./orchestration/scripts/mongodump.sh /directory/to/save
+./container/scripts/distribute.sh
 ```
 
 ## Find Email
 
 ```
-./orchestration/scripts/findemail.sh name@domain.com
+./container/scripts/findemail.sh name@domain.com
 ```
