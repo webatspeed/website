@@ -37,3 +37,9 @@ open https://www.webatspeed.de
 ```
 ./container/scripts/findemail.sh name@domain.com
 ```
+
+## Get Number of Subscribers
+
+```
+./container/scripts/countsubscribers.sh
+```
