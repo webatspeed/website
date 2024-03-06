@@ -20,7 +20,7 @@ MONGO_TASK=$(aws ecs list-tasks \
  --query "taskArns" | \
  jq -r '.[0] | split("/")[-1]')
 
-MONGO_QUERY="db.subscription.find({\"email\": \\\"$1\\\"});"
+MONGO_QUERY="db.subscription.find({\"email\": {\$regex: \\\"$1\\\"} });"
 MONGO_CONNECTION="mongodb://$MONGO_USERNAME:$MONGO_PASSWORD@localhost:27017/subscription?authSource=admin"
 MONGO_SEARCH="mongosh --eval '$MONGO_QUERY' $MONGO_CONNECTION";
 
