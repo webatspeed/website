@@ -29,12 +29,17 @@ module "loadbalancing" {
   certificate_arn     = module.routing.certificate_arn
 }
 
+module "static" {
+  source = "./static"
+}
+
 module "routing" {
   source = "./routing"
 
-  dns_name   = module.loadbalancing.lb_endpoint
-  zone_id    = module.loadbalancing.lb_zone_id
-  aws_region = var.aws_region
+  dns_name      = module.loadbalancing.lb_endpoint
+  zone_id       = module.loadbalancing.lb_zone_id
+  aws_region    = var.aws_region
+  static_bucket = module.static.bucket_name
 }
 
 module "mailing" {
