@@ -21,3 +21,4 @@ variable "lb_interval" {
 }
 variable "listener_ssl_policy" {}
 variable "certificate_arn" {}
+variable "use" {}

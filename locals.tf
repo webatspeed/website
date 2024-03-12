@@ -1,21 +1,24 @@
 locals {
   vpc_cidr     = "10.123.0.0/16"
   cluster_name = "webatspeed-cluster"
+  root_domain  = "webatspeed.de"
+  subdomain    = "www.${local.root_domain}"
+  static       = true
 }
 
 locals {
   containers = {
     frontend = {
       port          = 3000
-      desired_count = 1
+      desired_count = local.static ? 0 : 1
     }
     subscription = {
       port          = 8080
-      desired_count = 1
+      desired_count = local.static ? 0 : 1
     }
     mongodb = {
       port          = 27017
-      desired_count = 1
+      desired_count = local.static ? 0 : 1
     }
   }
 }

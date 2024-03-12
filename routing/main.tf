@@ -1,22 +1,22 @@
-resource "aws_route53_zone" "webatspeed_zone_de" {
-  name = "webatspeed.de"
+provider "aws" {
+  region = "us-east-1"
+  alias  = "virginia"
 }
 
-resource "aws_acm_certificate" "webatspeed_acm_cert" {
-  domain_name               = aws_route53_zone.webatspeed_zone_de.name
-  subject_alternative_names = ["*.${aws_route53_zone.webatspeed_zone_de.name}"]
+resource "aws_route53_zone" "webatspeed_zone_de" {
+  name = var.root_domain_name
+}
+
+resource "aws_acm_certificate" "webatspeed_cert" {
+  domain_name               = "*.${var.root_domain_name}"
   validation_method         = "DNS"
-  tags = {
-    Name : aws_route53_zone.webatspeed_zone_de.name
-  }
-  lifecycle {
-    create_before_destroy = true
-  }
+  subject_alternative_names = [var.root_domain_name]
+  provider                  = aws.virginia
 }
 
 resource "aws_route53_record" "webatspeed_route53_record" {
   for_each = {
-    for dvo in aws_acm_certificate.webatspeed_acm_cert.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.webatspeed_cert.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
@@ -32,23 +32,112 @@ resource "aws_route53_record" "webatspeed_route53_record" {
 }
 
 resource "aws_acm_certificate_validation" "webatspeed_acm_cert_validation" {
+  provider = aws.virginia
   timeouts {
     create = "7m"
   }
 
-  certificate_arn         = aws_acm_certificate.webatspeed_acm_cert.arn
+  certificate_arn         = aws_acm_certificate.webatspeed_cert.arn
   validation_record_fqdns = [for record in aws_route53_record.webatspeed_route53_record : record.fqdn]
 }
 
-resource "aws_route53_record" "webatspeed_de" {
-  for_each = toset(["", "www."])
-  name     = "${each.key}${aws_route53_zone.webatspeed_zone_de.name}"
-  type     = "A"
-  zone_id  = aws_route53_zone.webatspeed_zone_de.zone_id
-  alias {
-    evaluate_target_health = true
-    name                   = var.dns_name
-    zone_id                = var.zone_id
+resource "aws_cloudfront_distribution" "webatspeed_distribution" {
+  count = var.use ? 1 : 0
+
+  origin {
+    custom_origin_config {
+      http_port              = "80"
+      https_port             = "443"
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
+
+    domain_name = var.static_endpoint
+    origin_id   = var.www_domain_name
+  }
+
+  enabled             = true
+  default_root_object = "index.html"
+
+  default_cache_behavior {
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = var.www_domain_name
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+  }
+
+  aliases = [var.www_domain_name]
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    acm_certificate_arn = aws_acm_certificate.webatspeed_cert.arn
+    ssl_support_method  = "sni-only"
+  }
+}
+
+resource "aws_cloudfront_distribution" "webatspeed_distribution_apex" {
+  count = var.use ? 1 : 0
+
+  origin {
+    custom_origin_config {
+      http_port              = "80"
+      https_port             = "443"
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
+
+    domain_name = var.static_endpoint_apex
+    origin_id   = var.root_domain_name
+  }
+
+  enabled             = true
+  default_root_object = "index.html"
+
+  default_cache_behavior {
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = var.root_domain_name
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+  }
+
+  aliases = [var.root_domain_name]
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    acm_certificate_arn = aws_acm_certificate.webatspeed_cert.arn
+    ssl_support_method  = "sni-only"
   }
 }
 
@@ -104,4 +193,32 @@ resource "aws_route53_record" "webatspeed_mx_mail_from" {
   type    = "MX"
   ttl     = 600
   records = ["10 feedback-smtp.${var.aws_region}.amazonses.com"]
+}
+
+resource "aws_route53_record" "webatspeed_alias_www" {
+  count = var.use ? 1 : 0
+
+  name    = var.www_domain_name
+  type    = "A"
+  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
+
+  alias {
+    evaluate_target_health = false
+    name                   = aws_cloudfront_distribution.webatspeed_distribution[0].domain_name
+    zone_id                = aws_cloudfront_distribution.webatspeed_distribution[0].hosted_zone_id
+  }
+}
+
+resource "aws_route53_record" "webatspeed_alias_apex" {
+  count = var.use ? 1 : 0
+
+  name    = ""
+  type    = "A"
+  zone_id = aws_route53_zone.webatspeed_zone_de.zone_id
+
+  alias {
+    evaluate_target_health = false
+    name                   = aws_cloudfront_distribution.webatspeed_distribution_apex[0].domain_name
+    zone_id                = aws_cloudfront_distribution.webatspeed_distribution_apex[0].hosted_zone_id
+  }
 }

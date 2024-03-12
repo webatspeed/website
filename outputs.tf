@@ -1,7 +1,6 @@
 output "addresses" {
   value = concat(
-    [for route in module.routing.routes : "https://${route}"],
-    ["http://${module.loadbalancing.lb_endpoint}"]
+    [for route in module.routing.routes : "https://${route}"]
   )
 }
 

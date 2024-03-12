@@ -145,10 +145,13 @@ resource "aws_ecs_service" "webatspeed_service_frontend" {
     subnets         = var.private_subnet_ids
   }
 
-  load_balancer {
-    target_group_arn = var.lb_target_group_arn
-    container_name   = aws_ecs_task_definition.webatspeed_task_frontend.family
-    container_port   = var.containers.frontend.port
+  dynamic "load_balancer" {
+    for_each = var.lb_target_group_arn == null ? [] : [var.lb_target_group_arn]
+    content {
+      target_group_arn = load_balancer.key
+      container_name   = aws_ecs_task_definition.webatspeed_task_frontend.family
+      container_port   = var.containers.frontend.port
+    }
   }
 
   service_registries {

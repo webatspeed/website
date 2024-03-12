@@ -2,3 +2,9 @@ variable "dns_name" {}
 variable "zone_id" {}
 variable "aws_region" {}
 variable "static_bucket" {}
+variable "static_endpoint" {}
+variable "static_bucket_apex" {}
+variable "static_endpoint_apex" {}
+variable "www_domain_name" {}
+variable "root_domain_name" {}
+variable "use" {}

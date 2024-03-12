@@ -13,6 +13,7 @@ module "networking" {
 
 module "loadbalancing" {
   source = "./loadbalancing"
+  use    = !local.static
 
   public_sg      = module.networking.public_sg
   public_subnets = module.networking.public_subnets
@@ -30,16 +31,24 @@ module "loadbalancing" {
 }
 
 module "static" {
-  source = "./static"
+  source           = "./static"
+  root_domain_name = local.root_domain
+  www_domain_name  = local.subdomain
 }
 
 module "routing" {
   source = "./routing"
+  use    = local.static
 
-  dns_name      = module.loadbalancing.lb_endpoint
-  zone_id       = module.loadbalancing.lb_zone_id
-  aws_region    = var.aws_region
-  static_bucket = module.static.bucket_name
+  dns_name             = module.loadbalancing.lb_endpoint
+  zone_id              = module.loadbalancing.lb_zone_id
+  aws_region           = var.aws_region
+  static_bucket        = module.static.bucket_name
+  static_endpoint      = module.static.website_endpoint
+  static_bucket_apex   = module.static.bucket_name_apex
+  static_endpoint_apex = module.static.website_endpoint_apex
+  root_domain_name     = local.root_domain
+  www_domain_name      = local.subdomain
 }
 
 module "mailing" {
