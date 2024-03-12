@@ -76,7 +76,7 @@ module "discovery" {
 module "container" {
   source = "./container"
 
-  enable_insights           = true
+  enable_insights           = !local.static
   cluster_name              = local.cluster_name
   region                    = var.aws_region
   private_subnet_ids        = module.networking.private_subnet_ids
