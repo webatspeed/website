@@ -33,11 +33,9 @@ resource "aws_s3_bucket_public_access_block" "apex_access_block" {
 resource "aws_s3_bucket_website_configuration" "apex_bucket" {
   bucket = aws_s3_bucket.apex_bucket.id
 
-  index_document {
-    suffix = "index.html"
-  }
-  error_document {
-    key = "404.html"
+  redirect_all_requests_to {
+    host_name = var.www_domain_name
+    protocol  = "https"
   }
 }
 
