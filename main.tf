@@ -31,9 +31,10 @@ module "loadbalancing" {
 }
 
 module "static" {
-  source           = "./static"
-  root_domain_name = local.root_domain
-  www_domain_name  = local.subdomain
+  source             = "./static"
+  root_domain_name   = local.root_domain
+  www_domain_name    = local.subdomain
+  legacy_domain_name = local.legacy_domain
 }
 
 module "routing" {

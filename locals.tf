@@ -1,9 +1,10 @@
 locals {
-  vpc_cidr     = "10.123.0.0/16"
-  cluster_name = "webatspeed-cluster"
-  root_domain  = "webatspeed.de"
-  subdomain    = "www.${local.root_domain}"
-  static       = true
+  vpc_cidr      = "10.123.0.0/16"
+  cluster_name  = "webatspeed-cluster"
+  root_domain   = "webatspeed.de"
+  subdomain     = "www.${local.root_domain}"
+  legacy_domain = "legacy.${local.root_domain}"
+  static        = true
 }
 
 locals {
