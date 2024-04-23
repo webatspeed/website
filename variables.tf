@@ -6,18 +6,6 @@ variable "access_ip" {
   type = string
 }
 
-variable "public_key_path" {
-  type = string
-}
-
-variable "private_key_path" {
-  type = string
-}
-
-variable "db_name" {
-  type = string
-}
-
 variable "db_user" {
   type      = string
   sensitive = true
