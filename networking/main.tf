@@ -76,7 +76,7 @@ resource "aws_eip" "webatspeed_nat_eip" {
 }
 
 resource "aws_nat_gateway" "webatspeed_nat_gateway" {
-  count         = var.public_subnet_count
+  count         = var.use_nat_gateway ? var.public_subnet_count : 0
   allocation_id = element(aws_eip.webatspeed_nat_eip.*.id, count.index)
   subnet_id     = element(aws_subnet.webatspeed_public_subnet.*.id, count.index)
   depends_on    = [aws_internet_gateway.webatspeed_internet_gateway]
@@ -86,10 +86,14 @@ resource "aws_route_table" "webatspeed_private_rt" {
   count  = var.public_subnet_count
   vpc_id = aws_vpc.webatspeed-vpc.id
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.webatspeed_nat_gateway[count.index].id
+  dynamic "route" {
+    for_each = aws_nat_gateway.webatspeed_nat_gateway
+    content {
+        cidr_block     = "0.0.0.0/0"
+        nat_gateway_id = aws_nat_gateway.webatspeed_nat_gateway[route.key].id
+    }
   }
+
   tags = {
     Name = "private-${count.index}"
   }

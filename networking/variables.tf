@@ -27,3 +27,7 @@ variable "security_groups" {}
 variable "create_db_subnet_group" {
   type = bool
 }
+
+variable "use_nat_gateway" {
+  type = bool
+}

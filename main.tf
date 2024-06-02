@@ -9,6 +9,7 @@ module "networking" {
   private_cidrs          = [for i in range(1, 255, 2) : cidrsubnet(local.vpc_cidr, 8, i)]
   security_groups        = local.security_groups
   create_db_subnet_group = true
+  use_nat_gateway        = !local.static
 }
 
 module "loadbalancing" {
