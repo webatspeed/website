@@ -37,6 +37,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "webatspeed_pipeline_bucket_lif
   rule {
     id     = "expire-pipeline-files"
     status = "Enabled"
+    filter {
+      prefix = ""
+    }
     expiration {
       days = 3
     }

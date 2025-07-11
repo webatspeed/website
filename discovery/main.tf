@@ -15,10 +15,6 @@ resource "aws_service_discovery_service" "webatspeed_ds_mongodb" {
       type = "A"
     }
   }
-
-  health_check_custom_config {
-    failure_threshold = 1
-  }
 }
 
 resource "aws_service_discovery_service" "webatspeed_ds_frontend" {
@@ -33,10 +29,6 @@ resource "aws_service_discovery_service" "webatspeed_ds_frontend" {
       type = "A"
     }
   }
-
-  health_check_custom_config {
-    failure_threshold = 1
-  }
 }
 
 resource "aws_service_discovery_service" "webatspeed_ds_subscription" {
@@ -50,9 +42,5 @@ resource "aws_service_discovery_service" "webatspeed_ds_subscription" {
       ttl  = 60
       type = "A"
     }
-  }
-
-  health_check_custom_config {
-    failure_threshold = 1
   }
 }
